@@ -959,7 +959,7 @@ body {
     /* 写邮件区域调整 */
     .write-email {
         padding: calc(var(--nav-height) + 10px) 10px;
-        min-height: 100vh;
+        height: 100vh;
         display: flex;
         flex-direction: column;
     }
@@ -968,15 +968,13 @@ body {
         display: flex;
         flex-direction: column;
         gap: 10px;
-        flex: 1;
-        min-height: 0; /* 重要：允许容器内的元素正确计算高度 */
+        height: calc(100vh - var(--nav-height) - 20px);
     }
 
     /* 输入输出面板共同样式 */
     .input-panel,
     .output-panel {
-        flex: 1;
-        min-height: 0; /* 重要：允许内容正确滚动 */
+        height: calc((100vh - var(--nav-height) - 30px) / 2);
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -988,7 +986,6 @@ body {
     /* 面板头部样式 */
     .panel-header {
         height: 44px;
-        min-height: 44px;
         padding: 0 16px;
         display: flex;
         align-items: center;
@@ -998,16 +995,14 @@ body {
 
     /* 输入区域调整 */
     .editor-content {
-        flex: 1;
-        min-height: 0;
+        height: calc(100% - 44px);
         display: flex;
         flex-direction: column;
         padding: 10px;
     }
 
     .content-editor {
-        flex: 1;
-        min-height: 0;
+        height: calc(100% - 50px);
         padding: 10px;
         font-size: 15px;
         border: 1px solid rgba(0, 0, 0, 0.1);
@@ -1018,10 +1013,8 @@ body {
 
     /* 输出区域调整 */
     .ai-response {
-        flex: 1;
-        min-height: 0;
+        height: calc(100% - 44px);
         padding: 10px;
-        overflow: hidden;
     }
 
     .email-preview {
@@ -1050,12 +1043,13 @@ body {
 @media screen and (max-width: 768px) and (orientation: landscape) {
     .email-editor-container {
         flex-direction: row;
+        height: calc(100vh - var(--nav-height) - 20px);
     }
 
     .input-panel,
     .output-panel {
-        width: 50%;
-        height: calc(100vh - var(--nav-height) - 20px);
+        width: calc(50% - 5px);
+        height: 100%;
     }
 }
 
