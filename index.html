@@ -182,100 +182,70 @@
     <!-- JavaScript -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const container = document.querySelector('.fullpage-container');
             const sections = document.querySelectorAll('.section');
-            const indicators = document.querySelectorAll('.indicator');
             const navLinks = document.querySelectorAll('.nav-link');
             const contentEditor = document.querySelector('.content-editor');
             const previewContent = document.querySelector('.preview-content');
-            const emailEditorContainer = document.querySelector('.email-editor-container');
             let currentSection = 0;
-            let isAnimating = false;
 
             // 检测是否为移动设备
             const isMobileDevice = () => {
                 return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
             };
 
-            // 初始化页面样式
-            function initializePageStyle() {
-                if (isMobileDevice()) {
-                    // 移动端使用原生滚动
-                    container.style.transform = 'none';
-                    container.style.position = 'static';
-                    container.style.height = 'auto';
-                    sections.forEach(section => {
-                        section.style.position = 'relative';
-                        section.style.height = '100vh';
-                        section.style.transform = 'none';
-                    });
-                    // 隐藏页面指示器
-                    document.querySelector('.page-indicator').style.display = 'none';
-                } else {
-                    // 桌面端使用幻灯片效果
-                    container.style.transform = 'translateY(0)';
-                    container.style.position = 'relative';
-                    container.style.height = '100vh';
-                    sections.forEach((section, index) => {
-                        section.style.position = 'absolute';
-                        section.style.height = '100vh';
-                        section.style.transform = `translateY(${index * 100}%)`;
-                    });
-                    document.querySelector('.page-indicator').style.display = 'flex';
-                }
-            }
-
             // 更新活动状态
             function updateActiveState(index) {
+                // 更新导航链接状态
                 navLinks.forEach(link => link.classList.remove('active'));
                 const activeLink = document.querySelector(`.nav-link[data-index="${index}"]`);
                 if (activeLink && index !== 0) {
                     activeLink.classList.add('active');
                 }
-                
-                if (!isMobileDevice()) {
-                    indicators.forEach(indicator => indicator.classList.remove('active'));
-                    indicators[index].classList.add('active');
-                }
-            }
 
-            // 滚动到指定部分
-            function scrollToSection(section) {
-                const navHeight = document.querySelector('.nav-header').offsetHeight;
-                const targetPosition = section.offsetTop - navHeight;
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
+                // 更新页面显示状态
+                sections.forEach((section, i) => {
+                    if (i === index) {
+                        section.classList.add('active');
+                    } else {
+                        section.classList.remove('active');
+                    }
                 });
             }
 
             // 切换到指定页面
             function goToSection(index) {
                 if (isMobileDevice()) {
-                    const targetSection = sections[index];
-                    scrollToSection(targetSection);
-                    updateActiveState(index);
-                } else {
-                    if (isAnimating || index === currentSection) return;
-                    if (index < 0 || index >= sections.length) return;
-                    
-                    isAnimating = true;
-                    const translateY = -100 * index;
-                    container.style.transform = `translateY(${translateY}vh)`;
+                    // 移动端：显示/隐藏切换
                     currentSection = index;
                     updateActiveState(index);
-
-                    setTimeout(() => {
-                        isAnimating = false;
-                    }, 1000);
+                } else {
+                    // 桌面端：滑动切换
+                    if (index < 0 || index >= sections.length) return;
+                    const translateY = -100 * index;
+                    document.querySelector('.fullpage-container').style.transform = `translateY(${translateY}vh)`;
+                    currentSection = index;
+                    updateActiveState(index);
                 }
             }
 
-            // 初始化页面样式
-            initializePageStyle();
+            // 初始化页面状态
+            function initializePageState() {
+                if (isMobileDevice()) {
+                    // 移动端：显示第一个页面
+                    sections[0].classList.add('active');
+                    document.querySelector('.page-indicator').style.display = 'none';
+                } else {
+                    // 桌面端：初始化滑动布局
+                    document.querySelector('.fullpage-container').style.transform = 'translateY(0)';
+                    document.querySelector('.page-indicator').style.display = 'flex';
+                }
+            }
+
+            // 初始化页面状态
+            initializePageState();
 
             // 监听窗口大小变化
-            window.addEventListener('resize', initializePageStyle);
+            window.addEventListener('resize', initializePageState);
 
             // 导航链接点击事件
             navLinks.forEach(link => {
@@ -297,23 +267,6 @@
                 e.preventDefault();
                 goToSection(1);
             });
-
-            // 监听滚动事件来更新导航状态
-            if (isMobileDevice()) {
-                window.addEventListener('scroll', () => {
-                    const scrollPosition = window.scrollY + window.innerHeight / 3;
-                    const navHeight = document.querySelector('.nav-header').offsetHeight;
-
-                    sections.forEach((section, index) => {
-                        const sectionTop = section.offsetTop - navHeight;
-                        const sectionBottom = sectionTop + section.offsetHeight;
-                        
-                        if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
-                            updateActiveState(index);
-                        }
-                    });
-                });
-            }
         });
     </script>
 

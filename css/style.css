@@ -896,9 +896,10 @@ body {
 @media screen and (max-width: 768px) {
     html, body {
         overflow-x: hidden;
-        overflow-y: auto;
-        height: auto;
-        scroll-behavior: smooth;
+        overflow-y: hidden;
+        height: 100%;
+        position: fixed;
+        width: 100%;
     }
 
     /* 导航栏样式调整 */
@@ -950,27 +951,45 @@ body {
     }
 
     /* 页面布局调整 */
+    .fullpage-container {
+        height: 100%;
+        width: 100%;
+        position: fixed;
+        top: var(--nav-height);
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+
     .section {
-        min-height: 100vh;
-        padding-top: var(--nav-height);
-        position: relative;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .section.active {
+        display: block;
+        opacity: 1;
     }
 
     /* 写邮件区域调整 */
     .write-email {
-        padding: calc(var(--nav-height) + 10px) 10px;
-        height: 100vh;
+        padding: 10px;
+        height: 100%;
         display: flex;
         flex-direction: column;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
     }
 
     .email-editor-container {
         display: flex;
         flex-direction: column;
         gap: 10px;
-        height: calc(100vh - var(--nav-height) - 20px);
+        height: 100%;
         width: 100%;
         max-width: 100%;
         padding: 0;
@@ -980,7 +999,7 @@ body {
     /* 输入输出面板共同样式 */
     .input-panel,
     .output-panel {
-        height: calc((100vh - var(--nav-height) - 30px) / 2);
+        height: calc(50% - 5px);
         width: 100%;
         max-width: 100%;
         margin: 0;
@@ -990,7 +1009,6 @@ body {
         background: #FFFFFF;
         border-radius: 12px;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        position: relative;
     }
 
     /* 面板头部样式 */
@@ -1063,34 +1081,13 @@ body {
         padding: 0;
         border-radius: 8px;
     }
-
-    /* 修复滚动问题 */
-    .section {
-        min-height: 100vh;
-        height: auto;
-        padding-top: var(--nav-height);
-        position: relative;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        overscroll-behavior: contain;
-    }
-
-    /* 确保所有可滚动区域都能正常工作 */
-    .content-editor,
-    .preview-content,
-    .email-preview,
-    .ai-response {
-        -webkit-overflow-scrolling: touch;
-        overscroll-behavior: contain;
-        touch-action: pan-y;
-    }
 }
 
 /* 横屏模式优化 */
 @media screen and (max-width: 768px) and (orientation: landscape) {
     .email-editor-container {
         flex-direction: row;
-        height: calc(100vh - var(--nav-height) - 20px);
+        height: 100%;
         width: 100%;
         gap: 10px;
         padding: 0;
