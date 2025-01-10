@@ -79,16 +79,15 @@ html, body {
 .fullpage-container {
     height: 100vh;
     transition: transform 1s cubic-bezier(0.645, 0.045, 0.355, 1);
-    position: relative;
+    will-change: transform;
+    margin-top: var(--nav-height);
 }
 
 .section {
     height: 100vh;
     width: 100vw;
-    position: absolute;
-    top: 0;
-    left: 0;
     overflow: auto;
+    position: relative;
 }
 
 /* 页面指示器 */
@@ -234,6 +233,7 @@ html, body {
         width: 100%;
         height: 100%;
         overflow: hidden;
+        overscroll-behavior: none;
     }
 
     .fullpage-container {
@@ -243,6 +243,7 @@ html, body {
         right: 0;
         bottom: 0;
         overflow: hidden;
+        margin-top: 0;
     }
 
     .section {
@@ -299,6 +300,7 @@ html, body {
         gap: 10px;
         height: auto;
         min-height: calc(100% - 20px);
+        overscroll-behavior: contain;
     }
 
     .input-panel,
@@ -306,12 +308,15 @@ html, body {
         height: calc(50% - 5px);
         width: 100%;
         min-height: 200px;
+        overscroll-behavior: contain;
     }
 
     .content-editor,
     .preview-content {
         -webkit-overflow-scrolling: touch;
         scroll-behavior: smooth;
+        overscroll-behavior: contain;
+        touch-action: pan-y;
     }
 
     /* 防止内容闪烁 */
@@ -348,5 +353,22 @@ html, body {
     .output-panel {
         width: calc(50% - 5px);
         height: 100%;
+    }
+}
+
+/* 桌面端样式 */
+@media screen and (min-width: 769px) {
+    .section {
+        position: relative;
+        display: block;
+        opacity: 1;
+    }
+    
+    .fullpage-container {
+        transform: translateY(0);
+    }
+    
+    .fullpage-container.transitioning {
+        pointer-events: none;
     }
 } 

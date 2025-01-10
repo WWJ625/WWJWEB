@@ -185,6 +185,8 @@
             const sections = document.querySelectorAll('.section');
             const navLinks = document.querySelectorAll('.nav-link');
             let currentSection = 0;
+            let touchStartY = 0;
+            let isTouching = false;
 
             // 检测是否为移动设备
             const isMobileDevice = () => {
@@ -223,10 +225,27 @@
                     updateActiveState(index);
                 } else {
                     if (index < 0 || index >= sections.length) return;
+                    const container = document.querySelector('.fullpage-container');
+                    container.classList.add('transitioning');
                     const translateY = -100 * index;
-                    document.querySelector('.fullpage-container').style.transform = `translateY(${translateY}vh)`;
+                    container.style.transform = `translateY(${translateY}vh)`;
                     currentSection = index;
-                    updateActiveState(index);
+                    
+                    // 更新导航状态
+                    document.querySelectorAll('.indicator').forEach((indicator, i) => {
+                        indicator.classList.toggle('active', i === index);
+                    });
+                    
+                    navLinks.forEach(link => link.classList.remove('active'));
+                    const activeLink = document.querySelector(`.nav-link[data-index="${index}"]`);
+                    if (activeLink && index !== 0) {
+                        activeLink.classList.add('active');
+                    }
+                    
+                    // 移除过渡类
+                    setTimeout(() => {
+                        container.classList.remove('transitioning');
+                    }, 1000);
                 }
             }
 
@@ -238,9 +257,11 @@
                         if (i === 0) {
                             section.style.display = 'block';
                             section.style.opacity = '1';
+                            section.classList.add('active');
                         } else {
                             section.style.display = 'none';
                             section.style.opacity = '0';
+                            section.classList.remove('active');
                         }
                     });
                     document.querySelector('.page-indicator').style.display = 'none';
@@ -249,11 +270,22 @@
                     sections.forEach(section => {
                         section.style.display = 'block';
                         section.style.opacity = '1';
+                        section.classList.remove('active');
                     });
                     document.querySelector('.fullpage-container').style.transform = 'translateY(0)';
                     document.querySelector('.page-indicator').style.display = 'flex';
                 }
-                updateActiveState(currentSection);
+                
+                // 更新导航状态
+                document.querySelectorAll('.indicator').forEach((indicator, i) => {
+                    indicator.classList.toggle('active', i === currentSection);
+                });
+                
+                navLinks.forEach(link => link.classList.remove('active'));
+                const activeLink = document.querySelector(`.nav-link[data-index="${currentSection}"]`);
+                if (activeLink && currentSection !== 0) {
+                    activeLink.classList.add('active');
+                }
             }
 
             // 初始化
@@ -280,6 +312,39 @@
                 e.preventDefault();
                 goToSection(1);
             });
+
+            // 移动端触摸事件处理
+            if (isMobileDevice()) {
+                document.addEventListener('touchstart', (e) => {
+                    const activeSection = document.querySelector('.section.active');
+                    if (!activeSection) return;
+                    
+                    // 只有当内容滚动到顶部时才记录触摸开始位置
+                    if (activeSection.scrollTop === 0) {
+                        touchStartY = e.touches[0].clientY;
+                        isTouching = true;
+                    }
+                }, { passive: true });
+
+                document.addEventListener('touchmove', (e) => {
+                    if (!isTouching) return;
+                    
+                    const activeSection = document.querySelector('.section.active');
+                    if (!activeSection || activeSection.scrollTop > 0) return;
+
+                    const touchY = e.touches[0].clientY;
+                    const deltaY = touchY - touchStartY;
+
+                    // 如果下拉距离小于阈值，阻止默认行为
+                    if (deltaY > 0) {
+                        e.preventDefault();
+                    }
+                }, { passive: false });
+
+                document.addEventListener('touchend', () => {
+                    isTouching = false;
+                }, { passive: true });
+            }
         });
     </script>
 
