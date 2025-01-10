@@ -962,6 +962,8 @@ body {
         height: 100vh;
         display: flex;
         flex-direction: column;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
     }
 
     .email-editor-container {
@@ -971,6 +973,8 @@ body {
         height: calc(100vh - var(--nav-height) - 20px);
         width: 100%;
         max-width: 100%;
+        padding: 0;
+        margin: 0;
     }
 
     /* 输入输出面板共同样式 */
@@ -980,11 +984,13 @@ body {
         width: 100%;
         max-width: 100%;
         margin: 0;
+        padding: 0;
         display: flex;
         flex-direction: column;
         background: #FFFFFF;
         border-radius: 12px;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        position: relative;
     }
 
     /* 面板头部样式 */
@@ -996,6 +1002,8 @@ body {
         align-items: center;
         justify-content: space-between;
         border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        background: #FFFFFF;
+        border-radius: 12px 12px 0 0;
     }
 
     /* 输入区域调整 */
@@ -1005,12 +1013,14 @@ body {
         display: flex;
         flex-direction: column;
         padding: 10px;
+        margin: 0;
     }
 
     .content-editor {
         height: calc(100% - 50px);
         width: 100%;
         padding: 10px;
+        margin: 0;
         font-size: 15px;
         border: 1px solid rgba(0, 0, 0, 0.1);
         border-radius: 8px;
@@ -1023,11 +1033,14 @@ body {
         height: calc(100% - 44px);
         width: 100%;
         padding: 10px;
+        margin: 0;
     }
 
     .email-preview {
         height: 100%;
         width: 100%;
+        margin: 0;
+        padding: 0;
         border: 1px solid rgba(0, 0, 0, 0.1);
         border-radius: 8px;
         background: #FAFAFA;
@@ -1037,6 +1050,7 @@ body {
         height: 100%;
         width: 100%;
         padding: 10px;
+        margin: 0;
         font-size: 15px;
         overflow-y: auto;
     }
@@ -1046,7 +1060,29 @@ body {
         height: 40px;
         width: 100%;
         margin-top: 10px;
+        padding: 0;
         border-radius: 8px;
+    }
+
+    /* 修复滚动问题 */
+    .section {
+        min-height: 100vh;
+        height: auto;
+        padding-top: var(--nav-height);
+        position: relative;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+    }
+
+    /* 确保所有可滚动区域都能正常工作 */
+    .content-editor,
+    .preview-content,
+    .email-preview,
+    .ai-response {
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+        touch-action: pan-y;
     }
 }
 
@@ -1056,6 +1092,9 @@ body {
         flex-direction: row;
         height: calc(100vh - var(--nav-height) - 20px);
         width: 100%;
+        gap: 10px;
+        padding: 0;
+        margin: 0;
     }
 
     .input-panel,
@@ -1063,6 +1102,7 @@ body {
         width: calc(50% - 5px);
         height: 100%;
         margin: 0;
+        padding: 0;
     }
 }
 
