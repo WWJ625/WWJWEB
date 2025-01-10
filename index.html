@@ -533,11 +533,7 @@ ${attachments.length > 0 ? `附件列表：\n${attachments.map(file => `- ${file
 
         // 显示回复内容
         function displayResponse(response) {
-            // 添加邮件主题
-            const subject = '邮件回复';
-            
             previewContent.innerHTML = `
-                <div class="email-subject">${subject}</div>
                 <div class="email-body">${response.replace(/\n/g, '<br>')}</div>
             `;
         }
