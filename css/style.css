@@ -586,7 +586,7 @@ body {
 }
 
 .logo-image {
-    height: 32px; /* 调整图片高度 */
+    height: 32px;
     width: auto;
     display: block;
 }
@@ -1103,5 +1103,65 @@ body {
         height: 36px;
         font-size: 14px;
         margin-top: 8px;
+    }
+}
+
+/* 移动端导航栏适配 */
+@media screen and (max-width: 768px) {
+    .nav-container {
+        padding: 0 15px;
+    }
+
+    .logo-image {
+        height: 24px; /* 移动端下缩小 logo */
+    }
+
+    .nav-menu {
+        gap: 15px;
+    }
+
+    .nav-menu a {
+        font-size: 14px;
+        padding: 5px 8px;
+    }
+}
+
+/* 超窄屏幕适配 */
+@media screen and (max-width: 480px) {
+    .nav-container {
+        padding: 0 10px;
+    }
+
+    .logo-image {
+        height: 20px; /* 更窄屏幕下进一步缩小 logo */
+    }
+
+    .nav-menu {
+        gap: 8px;
+    }
+
+    .nav-menu a {
+        font-size: 12px;
+        padding: 4px 6px;
+    }
+}
+
+/* 横屏模式适配 */
+@media screen and (max-height: 480px) and (orientation: landscape) {
+    .nav-header {
+        height: 36px; /* 横屏时减小导航栏高度 */
+    }
+
+    .logo-image {
+        height: 20px;
+    }
+
+    .nav-menu {
+        gap: 12px;
+    }
+
+    .nav-menu a {
+        font-size: 13px;
+        padding: 4px 8px;
     }
 } 
