@@ -181,28 +181,59 @@ html, body {
     background-color: #004499;
 }
 
+/* 主视觉区域样式 */
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    color: white;
+    padding: 20px;
+    min-height: 100%;
+}
+
+.hero-content {
+    max-width: 800px;
+    width: 100%;
+    padding: 0 20px;
+}
+
+.hero-title {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.hero-subtitle {
+    font-size: 24px;
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 15px 40px;
+    background-color: #FFFFFF;
+    color: var(--accent-color);
+    text-decoration: none;
+    border-radius: 30px;
+    font-size: 18px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+}
+
 /* 移动端样式 */
 @media screen and (max-width: 768px) {
     html, body {
         position: fixed;
         width: 100%;
-    }
-
-    .nav-container {
-        padding: 0 15px;
-    }
-
-    .nav-menu {
-        gap: 20px;
-    }
-
-    .nav-menu a {
-        font-size: 15px;
-        padding: 8px 12px;
-    }
-
-    .logo-image {
-        height: 28px;
+        height: 100%;
+        overflow: hidden;
     }
 
     .fullpage-container {
@@ -211,12 +242,20 @@ html, body {
         left: 0;
         right: 0;
         bottom: 0;
+        overflow: hidden;
     }
 
     .section {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
         display: none;
         opacity: 0;
         transition: opacity 0.3s ease;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
     }
 
     .section.active {
@@ -224,16 +263,49 @@ html, body {
         opacity: 1;
     }
 
+    /* 移动端首页样式调整 */
+    .hero {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100%;
+        padding: 20px 0;
+    }
+
+    .hero-content {
+        padding: 0 20px;
+        max-width: 100%;
+    }
+
+    .hero-title {
+        font-size: 32px;
+        margin-bottom: 15px;
+    }
+
+    .hero-subtitle {
+        font-size: 18px;
+        margin-bottom: 25px;
+    }
+
+    .cta-button {
+        padding: 12px 30px;
+        font-size: 16px;
+    }
+
+    /* 写邮件区域调整 */
     .email-editor-container {
         flex-direction: column;
         padding: 10px;
         gap: 10px;
+        height: auto;
+        min-height: calc(100% - 20px);
     }
 
     .input-panel,
     .output-panel {
         height: calc(50% - 5px);
         width: 100%;
+        min-height: 200px;
     }
 
     .content-editor,
@@ -241,12 +313,35 @@ html, body {
         -webkit-overflow-scrolling: touch;
         scroll-behavior: smooth;
     }
+
+    /* 防止内容闪烁 */
+    .section > * {
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+    }
 }
 
 /* 横屏模式 */
 @media screen and (max-width: 768px) and (orientation: landscape) {
+    .hero-title {
+        font-size: 28px;
+    }
+
+    .hero-subtitle {
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+
+    .cta-button {
+        padding: 10px 25px;
+        font-size: 15px;
+    }
+
     .email-editor-container {
         flex-direction: row;
+        height: 100%;
     }
 
     .input-panel,
