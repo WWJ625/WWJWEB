@@ -193,14 +193,26 @@
 
             // 更新活动状态
             function updateActiveState(index) {
+                // 更新导航链接状态
                 navLinks.forEach(link => link.classList.remove('active'));
                 const activeLink = document.querySelector(`.nav-link[data-index="${index}"]`);
                 if (activeLink && index !== 0) {
                     activeLink.classList.add('active');
                 }
 
+                // 更新页面显示状态
                 sections.forEach((section, i) => {
-                    section.classList.toggle('active', i === index);
+                    if (i === index) {
+                        section.style.display = 'block';
+                        setTimeout(() => {
+                            section.style.opacity = '1';
+                        }, 50);
+                    } else {
+                        section.style.opacity = '0';
+                        setTimeout(() => {
+                            section.style.display = 'none';
+                        }, 300);
+                    }
                 });
             }
 
@@ -221,12 +233,27 @@
             // 初始化页面状态
             function initializePageState() {
                 if (isMobileDevice()) {
-                    sections[0].classList.add('active');
+                    // 移动端：显示第一个页面，隐藏其他页面
+                    sections.forEach((section, i) => {
+                        if (i === 0) {
+                            section.style.display = 'block';
+                            section.style.opacity = '1';
+                        } else {
+                            section.style.display = 'none';
+                            section.style.opacity = '0';
+                        }
+                    });
                     document.querySelector('.page-indicator').style.display = 'none';
                 } else {
+                    // 桌面端：重置所有页面状态
+                    sections.forEach(section => {
+                        section.style.display = 'block';
+                        section.style.opacity = '1';
+                    });
                     document.querySelector('.fullpage-container').style.transform = 'translateY(0)';
                     document.querySelector('.page-indicator').style.display = 'flex';
                 }
+                updateActiveState(currentSection);
             }
 
             // 初始化
@@ -237,7 +264,8 @@
             navLinks.forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
-                    goToSection(parseInt(link.getAttribute('data-index')));
+                    const index = parseInt(link.getAttribute('data-index'));
+                    goToSection(index);
                 });
             });
 
