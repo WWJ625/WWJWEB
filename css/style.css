@@ -958,50 +958,53 @@ body {
 
     /* 写邮件区域调整 */
     .write-email {
-        padding: calc(var(--nav-height) + 10px) 10px 10px 10px;
+        padding: calc(var(--nav-height) + 10px) 10px;
         height: auto;
         min-height: 100vh;
+        display: flex;
+        flex-direction: column;
     }
 
     .email-editor-container {
+        flex: 1;
         flex-direction: column;
         height: calc(100vh - var(--nav-height) - 20px);
         margin: 0;
-        border-radius: 12px;
+        gap: 10px;
     }
 
     .input-panel,
     .output-panel {
         width: 100%;
+        height: calc((100vh - var(--nav-height) - 40px) / 2);
+        min-height: 200px;
         border-radius: 12px;
+        display: flex;
+        flex-direction: column;
     }
 
     .input-panel {
-        height: 45%;
-        margin-bottom: 10px;
-    }
-
-    .output-panel {
-        height: 55%;
+        margin-bottom: 0;
     }
 
     /* 输入区域调整 */
     .panel-header {
         padding: 12px 16px;
-    }
-
-    .panel-header h2 {
-        font-size: 16px;
+        min-height: 44px;
     }
 
     .editor-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
         padding: 12px 16px;
     }
 
     .content-editor {
+        flex: 1;
+        min-height: 100px;
         padding: 12px;
         font-size: 15px;
-        height: calc(100% - 50px);
     }
 
     .send-btn {
@@ -1011,8 +1014,9 @@ body {
 
     /* 输出区域调整 */
     .ai-response {
+        flex: 1;
         padding: 12px 16px;
-        height: calc(100% - 44px);
+        min-height: 100px;
     }
 
     .email-preview {
@@ -1021,8 +1025,10 @@ body {
     }
 
     .preview-content {
+        height: 100%;
         padding: 16px;
         font-size: 15px;
+        overflow-y: auto;
     }
 
     /* 其他区域调整 */
@@ -1052,36 +1058,26 @@ body {
     }
 }
 
-/* 超小屏幕优化 */
-@media screen and (max-width: 480px) {
-    .nav-menu {
-        gap: 15px;
+/* 横屏模式优化 */
+@media screen and (max-width: 768px) and (orientation: landscape) {
+    .email-editor-container {
+        flex-direction: row;
+        height: calc(100vh - var(--nav-height) - 20px);
     }
 
-    .nav-menu a {
-        font-size: 14px;
-        padding: 6px 10px;
+    .input-panel,
+    .output-panel {
+        width: calc(50% - 5px);
+        height: 100%;
     }
 
-    .logo-image {
-        height: 24px;
-    }
-
-    .hero-title {
-        font-size: 28px;
-    }
-
-    .hero-subtitle {
-        font-size: 16px;
-    }
-
-    .panel-header h2 {
-        font-size: 15px;
+    .input-panel {
+        margin-bottom: 0;
     }
 
     .content-editor,
-    .preview-content {
-        font-size: 14px;
+    .ai-response {
+        height: calc(100% - 44px);
     }
 }
 
@@ -1092,10 +1088,6 @@ body {
     .content-editor {
         -webkit-overflow-scrolling: touch;
         scroll-behavior: smooth;
-    }
-
-    .section {
-        scroll-margin-top: var(--nav-height);
     }
 }
 
