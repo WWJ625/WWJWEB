@@ -1,12 +1,9 @@
-// 页面滚动和导航相关的功能
-document.addEventListener('DOMContentLoaded', function() {
+// 页面滚动和导航功能
+function initializeNavigation() {
     const container = document.querySelector('.fullpage-container');
     const sections = document.querySelectorAll('.section');
     const indicators = document.querySelectorAll('.indicator');
     const navLinks = document.querySelectorAll('.nav-link');
-    const contentEditor = document.querySelector('.content-editor');
-    const previewContent = document.querySelector('.preview-content');
-    const emailEditorContainer = document.querySelector('.email-editor-container');
     let currentSection = 0;
     let isAnimating = false;
 
@@ -43,10 +40,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 检查是否在可滚动区域内
     function isInScrollableArea(target) {
-        // 只检查内容编辑器和预览内容区域
-        const editorArea = contentEditor.contains(target) || target === contentEditor;
-        const previewArea = previewContent.contains(target) || target === previewContent;
+        const contentEditor = document.querySelector('.content-editor');
+        const previewContent = document.querySelector('.preview-content');
         const emailPreview = document.querySelector('.email-preview');
+        
+        // 只检查内容编辑器和预览内容区域
+        const editorArea = contentEditor && (contentEditor.contains(target) || target === contentEditor);
+        const previewArea = previewContent && (previewContent.contains(target) || target === previewContent);
         const emailPreviewArea = emailPreview && (emailPreview.contains(target) || target === emailPreview);
         
         return editorArea || previewArea || emailPreviewArea;
@@ -115,20 +115,19 @@ document.addEventListener('DOMContentLoaded', function() {
     // 添加 logo 点击事件
     document.querySelector('.logo-link').addEventListener('click', e => {
         e.preventDefault();
-        // 清空输入框
+        // 如果点击的是首页，清空邮件编辑器的内容
         const contentEditor = document.querySelector('.content-editor');
+        const attachmentsList = document.querySelector('.attachments-list');
+        const previewContent = document.querySelector('.preview-content');
+
         if (contentEditor) {
             contentEditor.innerHTML = '';
         }
         
-        // 清空附件列表
-        const attachmentsList = document.querySelector('.attachments-list');
         if (attachmentsList) {
             attachmentsList.innerHTML = '';
         }
         
-        // 重置预览区域
-        const previewContent = document.querySelector('.preview-content');
         if (previewContent) {
             previewContent.innerHTML = '<p class="placeholder-text">AI 将根据您的输入生成邮件内容...</p>';
         }
@@ -144,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // "了解更多"按钮点击事件
+    // "开始使用"按钮点击事件
     document.querySelector('.next-section').addEventListener('click', e => {
         e.preventDefault();
         goToSection(1);
@@ -187,21 +186,56 @@ document.addEventListener('DOMContentLoaded', function() {
                 break;
         }
     });
-});
 
-// 邮件编辑器相关功能
-document.addEventListener('DOMContentLoaded', function() {
-    // 获取必要的DOM元素
-    const attachmentBtn = document.querySelector('.attachment-btn');
-    const fileUpload = document.querySelector('#file-upload');
-    const attachmentsList = document.querySelector('.attachments-list');
+    return { goToSection };
+}
+
+// 等待 DOM 和 EmailAPI 完全加载
+document.addEventListener('DOMContentLoaded', () => {
+    // 初始化导航功能
+    const navigation = initializeNavigation();
+
+    // 检查 EmailAPI 是否已加载
+    if (!window.EmailAPI) {
+        console.error('EmailAPI 未加载');
+        return;
+    }
+
+    // 获取 DOM 元素
     const contentEditor = document.querySelector('.content-editor');
     const sendBtn = document.querySelector('.send-btn');
     const previewContent = document.querySelector('.preview-content');
     const copyBtn = document.querySelector('.copy-btn');
-
+    const attachmentBtn = document.querySelector('.attachment-btn');
+    const fileUpload = document.querySelector('#file-upload');
+    const attachmentsList = document.querySelector('.attachments-list');
+    
     // 存储附件列表
     let attachments = [];
+
+    // 生成回复按钮点击事件
+    sendBtn.addEventListener('click', async () => {
+        const content = contentEditor.innerText.trim();
+        if (!content) {
+            alert('请输入邮件内容');
+            return;
+        }
+
+        // 显示加载状态
+        previewContent.innerHTML = '<div class="loading">正在生成回复...</div>';
+
+        try {
+            const response = await window.EmailAPI.generateEmailResponse(content, attachments);
+            window.EmailAPI.displayResponse(response);
+        } catch (error) {
+            previewContent.innerHTML = `
+                <div class="error-message">
+                    生成回复时出错
+                    <div class="error-detail">${error.message}</div>
+                </div>
+            `;
+        }
+    });
 
     // 附件按钮点击事件
     attachmentBtn.addEventListener('click', () => {
@@ -239,30 +273,6 @@ document.addEventListener('DOMContentLoaded', function() {
             div.remove();
         });
     }
-
-    // 生成回复按钮点击事件
-    sendBtn.addEventListener('click', async () => {
-        const content = contentEditor.innerText.trim();
-        if (!content) {
-            alert('请输入邮件内容');
-            return;
-        }
-
-        // 显示加载状态
-        previewContent.innerHTML = '<div class="loading">正在生成回复...</div>';
-
-        try {
-            const response = await generateEmailResponse(content, attachments);
-            displayResponse(response);
-        } catch (error) {
-            previewContent.innerHTML = `
-                <div class="error-message">
-                    生成回复时出错
-                    <div class="error-detail">${error.message}</div>
-                </div>
-            `;
-        }
-    });
 
     // 复制按钮功能
     copyBtn.addEventListener('click', () => {
@@ -307,72 +317,23 @@ document.addEventListener('DOMContentLoaded', function() {
         e.preventDefault();
         
         const clipboardData = e.clipboardData || window.clipboardData;
-        const items = clipboardData.items;
-
-        // 检查是否有图片
-        let hasImage = false;
-        for (let i = 0; i < items.length; i++) {
-            if (items[i].type.indexOf('image') !== -1) {
-                hasImage = true;
-                // 获取图片文件
-                const file = items[i].getAsFile();
-                // 处理图片
-                handlePastedImage(file);
-                break;
-            }
-        }
-
-        // 如果不是图片，则作为纯文本处理
-        if (!hasImage) {
-            const text = clipboardData.getData('text/plain');
-            // 使用 document.execCommand 插入纯文本
-            if (document.queryCommandSupported('insertText')) {
-                document.execCommand('insertText', false, text);
-            } else {
-                // 如果 insertText 命令不支持，则使用替代方法
-                const selection = window.getSelection();
-                if (selection.rangeCount) {
-                    const range = selection.getRangeAt(0);
-                    range.deleteContents();
-                    const textNode = document.createTextNode(text);
-                    range.insertNode(textNode);
-                    range.collapse(false);
-                    selection.removeAllRanges();
-                    selection.addRange(range);
-                }
-            }
-        }
-    });
-
-    // 处理粘贴的图片
-    function handlePastedImage(file) {
-        if (!file) return;
+        const text = clipboardData.getData('text/plain');
         
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const img = document.createElement('img');
-            img.src = e.target.result;
-            img.style.maxWidth = '100%';
-            img.style.height = 'auto';
-            img.style.margin = '10px 0';
-            img.style.borderRadius = '4px';
-            
-            // 获取当前选区
+        // 使用 document.execCommand 插入纯文本
+        if (document.queryCommandSupported('insertText')) {
+            document.execCommand('insertText', false, text);
+        } else {
+            // 如果 insertText 命令不支持，则使用替代方法
             const selection = window.getSelection();
             if (selection.rangeCount) {
                 const range = selection.getRangeAt(0);
                 range.deleteContents();
-                range.insertNode(img);
-                // 移动光标到图片后面
-                range.setStartAfter(img);
-                range.setEndAfter(img);
+                const textNode = document.createTextNode(text);
+                range.insertNode(textNode);
+                range.collapse(false);
                 selection.removeAllRanges();
                 selection.addRange(range);
-                // 添加换行
-                const br = document.createElement('br');
-                img.parentNode.insertBefore(br, img.nextSibling);
             }
-        };
-        reader.readAsDataURL(file);
-    }
+        }
+    });
 }); 

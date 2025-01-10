@@ -192,6 +192,28 @@ function displayResponse(response) {
     `;
 }
 
-// 导出函数供其他模块使用
-window.generateEmailResponse = generateEmailResponse;
-window.displayResponse = displayResponse; 
+// 创建全局对象来存储 API 函数
+window.EmailAPI = {
+    generateEmailResponse: generateEmailResponse,
+    displayResponse: displayResponse,
+    getApiKey: getApiKey
+};
+
+// 确保在页面加载完成后初始化
+document.addEventListener('DOMContentLoaded', () => {
+    // 检查必要的 API 配置
+    if (!API_CONFIG.url || !API_CONFIG.model) {
+        console.error('API 配置缺失');
+        return;
+    }
+
+    // 初始化事件监听器和其他必要的设置
+    console.log('Email API 初始化完成');
+});
+
+// 导出模块（兼容 ES6 模块和传统方式）
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = window.EmailAPI;
+} else if (typeof define === 'function' && define.amd) {
+    define([], function() { return window.EmailAPI; });
+} 
