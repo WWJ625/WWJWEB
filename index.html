@@ -207,133 +207,89 @@
                 indicators[index].classList.add('active');
             }
 
-            // 检查是否是触摸设备
-            function isTouchDevice() {
-                return ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0);
-            }
-
             // 切换到指定页面
             function goToSection(index) {
                 if (isAnimating || index === currentSection) return;
+                if (index < 0 || index >= sections.length) return;
+                
                 isAnimating = true;
+                const translateY = -100 * index;
+                container.style.transform = `translateY(${translateY}vh)`;
                 currentSection = index;
                 updateActiveState(index);
 
-                // 根据设备类型使用不同的切换效果
-                if (isTouchDevice()) {
-                    // 移动设备使用滚动效果
-                    const targetSection = sections[index];
-                    targetSection.scrollIntoView({ behavior: 'smooth' });
-                    setTimeout(() => {
-                        isAnimating = false;
-                    }, 1000);
-                } else {
-                    // 桌面设备使用幻灯片效果
-                    const translateY = -100 * index;
-                    container.style.transform = `translateY(${translateY}vh)`;
-                    setTimeout(() => {
-                        isAnimating = false;
-                    }, 1000);
-                }
+                setTimeout(() => {
+                    isAnimating = false;
+                }, 1000);
             }
 
-            // 初始化页面样式
-            function initializePageStyle() {
-                if (isTouchDevice()) {
-                    // 移动设备使用正常滚动布局
-                    container.style.position = 'relative';
-                    container.style.transform = 'none';
-                    container.style.transition = 'none';
-                    sections.forEach(section => {
-                        section.style.position = 'relative';
-                        section.style.height = '100vh';
-                    });
-                } else {
-                    // 桌面设备使用固定定位布局
-                    container.style.position = 'fixed';
-                    container.style.transform = 'translateY(0)';
-                    container.style.transition = 'transform 1s ease';
-                    sections.forEach(section => {
-                        section.style.position = 'relative';
-                        section.style.height = '100vh';
-                    });
-                }
-            }
-
-            // 检查是否在输入输出框区域内
-            function isInEditorArea(target) {
-                const contentEditor = document.querySelector('.content-editor');
-                const previewContent = document.querySelector('.preview-content');
+            // 检查是否在可滚动区域内
+            function isInScrollableArea(target) {
+                // 只检查内容编辑器和预览内容区域
+                const editorArea = contentEditor.contains(target) || target === contentEditor;
+                const previewArea = previewContent.contains(target) || target === previewContent;
                 const emailPreview = document.querySelector('.email-preview');
+                const emailPreviewArea = emailPreview && (emailPreview.contains(target) || target === emailPreview);
                 
-                return (contentEditor && (contentEditor.contains(target) || target === contentEditor)) ||
-                       (previewContent && (previewContent.contains(target) || target === previewContent)) ||
-                       (emailPreview && (emailPreview.contains(target) || target === emailPreview));
+                return editorArea || previewArea || emailPreviewArea;
             }
 
             // 监听鼠标滚轮
-            function handleWheel(event) {
-                if (isTouchDevice()) {
-                    // 移动设备不处理滚轮事件
+            function handleWheel(e) {
+                if (isAnimating) return;
+
+                // 检查是否在可滚动区域内
+                if (isInScrollableArea(e.target)) {
+                    // 在可滚动区域内，阻止页面切换
+                    e.stopPropagation();
                     return;
                 }
 
-                // 在输入输出框区域内允许正常滚动
-                if (isInEditorArea(event.target)) {
-                    const element = event.target;
-                    const isAtTop = element.scrollTop === 0;
-                    const isAtBottom = element.scrollHeight - element.scrollTop === element.clientHeight;
-
-                    if (!(isAtTop && event.deltaY < 0) && !(isAtBottom && event.deltaY > 0)) {
-                        event.stopPropagation();
-                        return;
-                    }
-                }
-
-                event.preventDefault();
-                const delta = event.deltaY;
-                if (delta > 0 && currentSection < sections.length - 1) {
+                // 在其他区域正常切换页面
+                if (e.deltaY > 0 && currentSection < sections.length - 1) {
                     goToSection(currentSection + 1);
-                } else if (delta < 0 && currentSection > 0) {
+                } else if (e.deltaY < 0 && currentSection > 0) {
                     goToSection(currentSection - 1);
                 }
             }
 
-            // 监听滚动事件（用于移动设备）
-            function handleScroll() {
-                if (!isTouchDevice() || isAnimating) return;
-
-                const currentScroll = window.scrollY;
-                const windowHeight = window.innerHeight;
-                const sectionIndex = Math.round(currentScroll / windowHeight);
-
-                if (sectionIndex !== currentSection) {
-                    currentSection = sectionIndex;
-                    updateActiveState(sectionIndex);
+            // 监听触摸事件
+            let touchStartY = 0;
+            container.addEventListener('touchstart', e => {
+                // 如果触摸开始于可滚动区域，不处理页面切换
+                if (isInScrollableArea(e.target)) {
+                    return;
                 }
-            }
+                touchStartY = e.touches[0].clientY;
+            });
 
-            // 初始化页面样式
-            initializePageStyle();
+            container.addEventListener('touchmove', e => {
+                // 如果触摸移动在可滚动区域内，不处理页面切换
+                if (isAnimating || isInScrollableArea(e.target)) {
+                    return;
+                }
+                
+                const touchEndY = e.touches[0].clientY;
+                const diff = touchStartY - touchEndY;
+
+                if (Math.abs(diff) > 50) {
+                    if (diff > 0 && currentSection < sections.length - 1) {
+                        goToSection(currentSection + 1);
+                    } else if (diff < 0 && currentSection > 0) {
+                        goToSection(currentSection - 1);
+                    }
+                    touchStartY = touchEndY;
+                }
+            });
 
             // 绑定事件监听器
             window.addEventListener('wheel', handleWheel);
-            window.addEventListener('scroll', handleScroll);
-            window.addEventListener('resize', initializePageStyle);
-
+            
             // 导航菜单点击事件
             navLinks.forEach(link => {
                 link.addEventListener('click', e => {
                     e.preventDefault();
                     const index = parseInt(link.getAttribute('data-index'));
-                    goToSection(index);
-                });
-            });
-
-            // 页面指示器点击事件
-            indicators.forEach(indicator => {
-                indicator.addEventListener('click', () => {
-                    const index = parseInt(indicator.getAttribute('data-index'));
                     goToSection(index);
                 });
             });
@@ -361,6 +317,14 @@
                 }
                 
                 goToSection(0);
+            });
+
+            // 页面指示器点击事件
+            indicators.forEach(indicator => {
+                indicator.addEventListener('click', () => {
+                    const index = parseInt(indicator.getAttribute('data-index'));
+                    goToSection(index);
+                });
             });
 
             // "了解更多"按钮点击事件
