@@ -499,36 +499,26 @@ body {
 .ai-response {
     flex: 1;
     padding: 24px 32px;
-    height: calc(100% - 80px); /* 与左侧编辑器区域保持一致 */
+    height: calc(100% - 80px);
 }
 
 .email-preview {
     background-color: #FAFAFA;
     border-radius: 12px;
     border: 1px solid rgba(0, 0, 0, 0.1);
-    height: calc(100% - 16px); /* 减去一些边距，确保与左侧按钮底部对齐 */
+    height: 100%;
     overflow-y: auto;
-    display: flex;
-    flex-direction: column;
 }
 
 .preview-content {
     padding: 20px;
-    flex: 1;
+    height: 100%;
     overflow-y: auto;
 }
 
+/* 移除邮件主题样式 */
 .email-subject {
-    font-size: 16px;
-    font-weight: 500;
-    color: var(--primary-color);
-    margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    position: sticky;
-    top: 0;
-    background-color: #FAFAFA;
-    z-index: 1;
+    display: none;
 }
 
 .email-body {
@@ -536,7 +526,8 @@ body {
     line-height: 1.8;
     color: var(--primary-color);
     overflow-wrap: break-word;
-    height: auto; /* 允许内容自然增长 */
+    padding: 0;
+    margin: 0;
 }
 
 .email-body br {
@@ -904,8 +895,10 @@ body {
 /* 移动端样式 */
 @media screen and (max-width: 768px) {
     html, body {
-        overflow: auto;
-        height: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+        height: auto;
+        scroll-behavior: smooth;
     }
 
     .fullpage-container {
@@ -920,6 +913,9 @@ body {
         transform: none !important;
         height: 100vh;
         min-height: 100vh;
+        top: auto;
+        left: auto;
+        scroll-snap-align: start;
     }
 
     /* 导航栏样式调整 */
@@ -942,20 +938,22 @@ body {
     }
 
     .nav-menu {
-        gap: 0;
+        display: flex;
         justify-content: flex-end;
-        width: auto;
+        gap: 15px;
         margin-left: auto;
-    }
-
-    .nav-menu li {
-        margin-left: 20px;
     }
 
     .nav-menu a {
         font-size: 14px;
         padding: 8px 12px;
         display: block;
+        color: var(--secondary-color);
+    }
+
+    .nav-menu a.active {
+        color: var(--accent-color);
+        font-weight: 500;
     }
 
     /* LOGO位置调整 */
@@ -969,69 +967,9 @@ body {
         width: auto;
     }
 
-    /* 写邮件区域调整 */
-    .write-email {
-        padding-top: var(--nav-height);
-    }
-
-    .email-editor-container {
-        flex-direction: column;
-        height: calc(100vh - var(--nav-height) - 40px);
-        margin: 20px;
-        border-radius: 12px;
-    }
-
-    .input-panel,
-    .output-panel {
-        width: 100%;
-        height: 50%;
-    }
-
-    .input-panel {
-        height: 45%;
-    }
-
-    .output-panel {
-        height: 55%;
-        border-top: 1px solid rgba(0, 0, 0, 0.1);
-    }
-
-    .output-panel::before {
-        display: none;
-    }
-
-    /* 输出面板样式调整 */
-    .email-preview {
-        border: none;
-        height: 100%;
-    }
-
-    .email-subject {
-        position: sticky;
-        top: 0;
-        z-index: 2;
-        background-color: #FAFAFA;
-        padding: 15px;
-        margin: 0;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    }
-
-    .preview-content {
-        flex: 1;
-        overflow-y: auto;
-        padding: 15px;
-        height: calc(100% - 50px);
-    }
-
-    .email-body {
-        padding-bottom: 20px;
-    }
-
-    /* 其他区域调整 */
-    .portfolio {
-        padding-top: calc(var(--nav-height) + 20px);
-    }
-
+    /* 各个区域顶部间距调整 */
+    .write-email,
+    .portfolio,
     .contact {
         padding-top: calc(var(--nav-height) + 20px);
     }
@@ -1039,6 +977,15 @@ body {
     /* 隐藏页面指示器 */
     .page-indicator {
         display: none;
+    }
+
+    .preview-content {
+        padding: 15px;
+    }
+    
+    .email-preview {
+        border: none;
+        height: 100%;
     }
 }
 
