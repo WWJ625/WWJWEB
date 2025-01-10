@@ -31,14 +31,23 @@ body {
 .fullpage-container {
     height: 100vh;
     transition: transform 1s cubic-bezier(0.645, 0.045, 0.355, 1);
+    position: relative;
 }
 
 .section {
     height: 100vh;
     width: 100vw;
-    overflow: auto; /* 允许内容区域滚动 */
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: auto;
 }
+
+/* 设置每个section的位置 */
+.section:nth-child(1) { transform: translateY(0); }
+.section:nth-child(2) { transform: translateY(100%); }
+.section:nth-child(3) { transform: translateY(200%); }
+.section:nth-child(4) { transform: translateY(300%); }
 
 /* 导航栏样式 */
 .nav-header {
@@ -908,9 +917,9 @@ body {
 
     .section {
         position: relative;
+        transform: none !important;
         height: 100vh;
         min-height: 100vh;
-        transform: none !important;
     }
 
     /* 导航栏样式调整 */
@@ -1064,5 +1073,22 @@ body {
 
     .section {
         scroll-margin-top: var(--nav-height);
+    }
+}
+
+/* 桌面端页面切换效果 */
+@media screen and (min-width: 769px) {
+    html, body {
+        overflow: hidden;
+    }
+
+    .fullpage-container {
+        will-change: transform;
+    }
+
+    .section {
+        will-change: transform;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
     }
 } 

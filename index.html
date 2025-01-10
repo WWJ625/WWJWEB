@@ -207,17 +207,20 @@
                     sections.forEach(section => {
                         section.style.position = 'relative';
                         section.style.height = '100vh';
+                        section.style.transform = 'none';
                     });
                     // 隐藏页面指示器
                     document.querySelector('.page-indicator').style.display = 'none';
                 } else {
                     // 桌面端使用幻灯片效果
                     container.style.transform = 'translateY(0)';
-                    container.style.position = 'fixed';
+                    container.style.position = 'relative';
                     container.style.height = '100vh';
-                    sections.forEach(section => {
+                    sections.forEach((section, index) => {
                         section.style.position = 'absolute';
                         section.style.height = '100vh';
+                        section.style.transform = `translateY(${index * 100}%)`;
+                        section.style.zIndex = index === 0 ? '2' : '1';
                     });
                     document.querySelector('.page-indicator').style.display = 'flex';
                 }
@@ -255,6 +258,16 @@
                     isAnimating = true;
                     const translateY = -100 * index;
                     container.style.transform = `translateY(${translateY}vh)`;
+                    
+                    // 更新当前section的z-index
+                    sections.forEach((section, i) => {
+                        if (i === index) {
+                            section.style.zIndex = '2';
+                        } else {
+                            section.style.zIndex = '1';
+                        }
+                    });
+
                     currentSection = index;
                     updateActiveState(index);
 
@@ -312,14 +325,29 @@
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
                     const index = parseInt(link.getAttribute('data-index'));
-                    goToSection(index);
+                    
+                    if (isMobileDevice()) {
+                        // 移动端使用滚动
+                        const targetSection = sections[index];
+                        targetSection.scrollIntoView({ behavior: 'smooth' });
+                        updateActiveState(index);
+                    } else {
+                        // 桌面端使用幻灯片效果
+                        goToSection(index);
+                    }
                 });
             });
 
             // Logo点击事件
             document.querySelector('.logo-link').addEventListener('click', (e) => {
                 e.preventDefault();
-                goToSection(0);
+                if (isMobileDevice()) {
+                    // 移动端滚动到顶部
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    updateActiveState(0);
+                } else {
+                    goToSection(0);
+                }
             });
 
             // 指示器点击事件
@@ -333,8 +361,32 @@
             // 开始使用按钮点击事件
             document.querySelector('.cta-button').addEventListener('click', (e) => {
                 e.preventDefault();
-                goToSection(1);
+                if (isMobileDevice()) {
+                    // 移动端滚动到写邮件区域
+                    const writeEmailSection = document.getElementById('write-email');
+                    writeEmailSection.scrollIntoView({ behavior: 'smooth' });
+                    updateActiveState(1);
+                } else {
+                    goToSection(1);
+                }
             });
+
+            // 监听滚动事件来更新导航状态
+            if (isMobileDevice()) {
+                window.addEventListener('scroll', () => {
+                    const scrollPosition = window.scrollY;
+                    
+                    // 找到当前可见的部分
+                    sections.forEach((section, index) => {
+                        const rect = section.getBoundingClientRect();
+                        const offset = window.innerHeight * 0.3; // 30% 视口高度的偏移
+                        
+                        if (rect.top <= offset && rect.bottom >= offset) {
+                            updateActiveState(index);
+                        }
+                    });
+                });
+            }
         });
     </script>
 
