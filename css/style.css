@@ -301,7 +301,8 @@ body {
     height: calc(100% - 80px);
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow: auto;
+    min-height: 200px;
 }
 
 .email-form {
@@ -309,7 +310,8 @@ body {
     display: flex;
     flex-direction: column;
     height: 100%;
-    overflow: hidden; /* 确保不会出现滚动条 */
+    min-height: 200px;
+    overflow: visible;
 }
 
 .form-group {
@@ -317,7 +319,8 @@ body {
     display: flex;
     flex-direction: column;
     height: calc(100% - 60px);
-    overflow: hidden; /* 确保不会出现滚动条 */
+    min-height: 100px;
+    overflow: visible;
 }
 
 .content-editor {
@@ -330,7 +333,9 @@ body {
     line-height: 1.8;
     background-color: #FAFAFA;
     transition: all 0.3s ease;
-    overflow-y: auto; /* 只在输入框内部保留滚动条 */
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch; /* 添加平滑滚动支持 */
+    overscroll-behavior: contain; /* 防止滚动传播 */
 }
 
 /* 优化滚动条样式 */
@@ -1040,9 +1045,11 @@ body {
         min-height: 100px;
     }
 
-    .email-preview {
-        height: calc(100% - 20px);
-    }
+.email-preview {
+    height: calc(100% - 20px);
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+}
 
     .preview-content {
         padding: 15px;
@@ -1164,4 +1171,4 @@ body {
         font-size: 13px;
         padding: 4px 8px;
     }
-} 
+}
