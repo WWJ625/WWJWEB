@@ -138,9 +138,15 @@ function initAnimations() {
         threshold: 0
     };
 
+    // 记录已经播放过动画的section
+    const animatedSections = new Set();
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting) {
+            if (entry.isIntersecting && !animatedSections.has(entry.target)) {
+                // 记录该section已播放动画
+                animatedSections.add(entry.target);
+                
                 // 移除所有动画相关的类
                 entry.target.classList.remove('active');
                 
@@ -150,37 +156,28 @@ function initAnimations() {
                 const featureTabs = entry.target.querySelectorAll('.feature-tab');
                 const featureContainer = entry.target.querySelector('.feature-container.active');
                 
-                projectCards.forEach(card => {
-                    card.style.animation = 'none';
-                    card.offsetHeight; // 触发重排
-                    card.style.animation = null;
-                });
+                // 重置卡片动画
+                const resetAnimation = (element) => {
+                    if (element) {
+                        element.style.animation = 'none';
+                        element.offsetHeight; // 触发重排
+                        element.style.animation = null;
+                    }
+                };
                 
-                musicCards.forEach(card => {
-                    card.style.animation = 'none';
-                    card.offsetHeight; // 触发重排
-                    card.style.animation = null;
-                });
-                
-                if (featureTabs.length > 0) {
-                    featureTabs.forEach(tab => {
-                        tab.style.animation = 'none';
-                        tab.offsetHeight; // 触发重排
-                        tab.style.animation = null;
-                    });
-                }
-                
-                if (featureContainer) {
-                    featureContainer.style.animation = 'none';
-                    featureContainer.offsetHeight; // 触发重排
-                    featureContainer.style.animation = null;
-                }
+                projectCards.forEach(resetAnimation);
+                musicCards.forEach(resetAnimation);
+                featureTabs.forEach(resetAnimation);
+                resetAnimation(featureContainer);
                 
                 // 强制重排
                 void entry.target.offsetHeight;
                 
                 // 添加 active 类触发动画
                 entry.target.classList.add('active');
+            } else if (!entry.isIntersecting) {
+                // 当元素离开视图时，从Set中移除，这样当它再次进入视图时可以重新播放动画
+                animatedSections.delete(entry.target);
             }
         });
     }, options);
@@ -197,6 +194,8 @@ function initAnimations() {
             const targetId = this.getAttribute('href').substring(1);
             const targetSection = document.getElementById(targetId);
             if (targetSection) {
+                // 点击导航时清除动画记录，确保可以重新播放
+                animatedSections.clear();
                 targetSection.scrollIntoView({ behavior: 'smooth' });
             }
         });
@@ -220,13 +219,12 @@ function initPageIndicators() {
             
             // 当section进入视图的1/3时激活
             if (scrollPosition >= sectionTop - windowHeight/3) {
-                // 更新指示器
+                // 只更新指示器和导航状态，不处理动画
                 indicators.forEach(ind => ind.classList.remove('active'));
                 if (indicators[index]) {
                     indicators[index].classList.add('active');
                 }
 
-                // 更新导航
                 navLinks.forEach(link => link.classList.remove('active'));
                 const sectionId = section.id;
                 const activeLink = document.querySelector(`.nav-link[href="#${sectionId}"]`);
