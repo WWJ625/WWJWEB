@@ -13,14 +13,14 @@
     <header class="nav-header">
         <nav class="nav-container">
             <div class="logo">
-                <a href="#" class="logo-link" data-index="0">
+                <a href="#home" class="logo-link" data-index="0">
                     <img src="images/weblogo.png" alt="MyPage Logo" class="logo-image">
                 </a>
             </div>
             <ul class="nav-menu">
-                <li><a href="#write-email" class="nav-link" data-index="1">写邮件</a></li>
-                <li><a href="#portfolio" class="nav-link" data-index="2">作品集</a></li>
-                <li><a href="#contact" class="nav-link" data-index="3">联系我</a></li>
+                <li><a href="#portfolio" class="nav-link" data-index="1">资讯</a></li>
+                <li><a href="#music-share" class="nav-link" data-index="2">音乐</a></li>
+                <li><a href="#write-email" class="nav-link" data-index="3">智能体</a></li>
             </ul>
         </nav>
     </header>
@@ -29,143 +29,518 @@
     <div class="fullpage-container">
         <!-- 主视觉区域 -->
         <section class="section hero" id="home">
+            <!-- 激光效果 -->
+            <div class="laser-container">
+                <div class="laser" style="--rotation: 45deg;"></div>
+                <div class="laser" style="--rotation: -35deg;"></div>
+                <div class="laser" style="--rotation: 25deg;"></div>
+                <div class="laser" style="--rotation: -15deg;"></div>
+            </div>
+            <!-- 光晕效果 -->
+            <div class="glow"></div>
+            <div class="glow"></div>
+            <!-- 粒子效果 -->
+            <div class="particles">
+                <!-- 动态生成的粒子将在这里 -->
+            </div>
             <div class="hero-content">
-                <h1 class="hero-title">智能邮件助手</h1>
-                <p class="hero-subtitle">专业的邮件回复，让沟通更轻松</p>
-                <a href="#write-email" class="cta-button next-section">开始使用</a>
+                <h1 class="hero-title">欢迎来到我的世界</h1>
+                <p class="hero-subtitle">这里汇聚资讯，智能写作，以及动人音乐</p>
+                <a href="#portfolio" class="cta-button next-section">开始体验</a>
             </div>
         </section>
 
-        <!-- 写邮件区域 -->
-        <section class="section write-email" id="write-email">
-            <div class="email-editor-container">
-                <!-- 左侧输入区域 -->
-                <div class="input-panel">
-                    <div class="panel-header">
-                        <h2>写邮件</h2>
-                        <button class="attachment-btn" title="添加附件">
-                            <svg viewBox="0 0 24 24" class="paperclip-icon">
-                                <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="editor-content">
-                        <div class="email-form">
-                            <div class="form-group">
-                                <div class="content-editor" contenteditable="true" placeholder="请输入您想要发送的邮件内容..."></div>
-                            </div>
-                            <div class="attachments-list">
-                                <!-- 附件列表将在这里动态显示 -->
-                            </div>
-                        </div>
-                        <input type="file" id="file-upload" multiple style="display: none" accept=".doc,.docx,.pdf,.xls,.xlsx">
-                        <button class="send-btn">生成回复</button>
-                    </div>
-                </div>
-
-                <!-- 右侧输出区域 -->
-                <div class="output-panel">
-                    <div class="panel-header">
-                        <h2>AI 回复预览</h2>
-                        <button class="copy-btn" title="复制到剪贴板">
-                            <svg viewBox="0 0 24 24" class="copy-icon">
-                                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-2"/>
-                                <path d="M16 2H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"/>
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="ai-response">
-                        <div class="email-preview">
-                            <div class="preview-content">
-                                <p class="placeholder-text">AI 将根据您的输入生成邮件内容...</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 作品集区域 -->
+        <!-- 资讯区域 -->
         <section class="section portfolio" id="portfolio">
             <div class="container">
-                <h2 class="section-title">作品集</h2>
-                <p class="section-subtitle">我的一些项目展示</p>
+                <h2 class="section-title">全球资讯</h2>
+                <p class="section-subtitle">分享有趣的新闻与热点话题</p>
+                
                 <div class="portfolio-grid">
-                    <div class="portfolio-item">
-                        <div class="portfolio-image">
-                            <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=600&q=80" alt="智能邮件助手">
-                            <div class="portfolio-overlay">
-                                <div class="portfolio-info">
-                                    <h3>智能邮件助手</h3>
-                                    <p>基于AI的邮件回复生成工具</p>
+                    <!-- 全球大事 -->
+                    <article class="project-card" style="--card-index: 0;">
+                        <header class="project-header">
+                            <div class="project-type">全球大事</div>
+                            <h3 class="project-title">2024全球经济展望：世界银行发布最新预测</h3>
+                            <p class="project-description">世界银行发布最新报告，预测2024年全球经济增长趋势及主要经济体发展前景...</p>
+                        </header>
+                        <div class="project-content">
+                            <div class="tech-stack">
+                                <span class="tech-tag">经济</span>
+                                <span class="tech-tag">全球化</span>
+                                <span class="tech-tag">发展趋势</span>
+                            </div>
+                            <div class="project-stats">
+                                <div class="stat-item">
+                                    <div class="stat-value">24H</div>
+                                    <div class="stat-label">更新时间</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">128</div>
+                                    <div class="stat-label">评论数</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">2.5K</div>
+                                    <div class="stat-label">阅读量</div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="portfolio-item">
-                        <div class="portfolio-image">
-                            <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=600&q=80" alt="个人网站">
-                            <div class="portfolio-overlay">
-                                <div class="portfolio-info">
-                                    <h3>个人网站</h3>
-                                    <p>响应式设计的现代化个人主页</p>
+                        <footer class="project-footer">
+                            <div class="project-status">
+                                <span class="status-dot"></span>
+                                热门话题
+                            </div>
+                            <a href="#" class="project-link">
+                                阅读全文
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                                </svg>
+                            </a>
+                        </footer>
+                    </article>
+
+                    <!-- 游戏相关 -->
+                    <article class="project-card" style="--card-index: 1;">
+                        <header class="project-header">
+                            <div class="project-type">游戏资讯</div>
+                            <h3 class="project-title">2024年最受期待的游戏大作前瞻</h3>
+                            <p class="project-description">盘点2024年即将发布的重磅游戏作品，包括各大游戏厂商的新作计划与创新玩法...</p>
+                        </header>
+                        <div class="project-content">
+                            <div class="tech-stack">
+                                <span class="tech-tag">游戏</span>
+                                <span class="tech-tag">新作</span>
+                                <span class="tech-tag">前瞻</span>
+                            </div>
+                            <div class="project-stats">
+                                <div class="stat-item">
+                                    <div class="stat-value">12H</div>
+                                    <div class="stat-label">更新时间</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">256</div>
+                                    <div class="stat-label">评论数</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">3.8K</div>
+                                    <div class="stat-label">阅读量</div>
                                 </div>
                             </div>
                         </div>
+                        <footer class="project-footer">
+                            <div class="project-status">
+                                <span class="status-dot in-progress"></span>
+                                持续更新
+                            </div>
+                            <a href="#" class="project-link">
+                                阅读全文
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                                </svg>
+                            </a>
+                        </footer>
+                    </article>
+
+                    <!-- 影视相关 -->
+                    <article class="project-card" style="--card-index: 2;">
+                        <header class="project-header">
+                            <div class="project-type">影视资讯</div>
+                            <h3 class="project-title">2024年值得期待的影视作品清单</h3>
+                            <p class="project-description">盘点今年最值得期待的电影、剧集作品，包括好莱坞大片、流媒体新剧等精彩内容...</p>
+                        </header>
+                        <div class="project-content">
+                            <div class="tech-stack">
+                                <span class="tech-tag">电影</span>
+                                <span class="tech-tag">剧集</span>
+                                <span class="tech-tag">上映信息</span>
+                            </div>
+                            <div class="project-stats">
+                                <div class="stat-item">
+                                    <div class="stat-value">6H</div>
+                                    <div class="stat-label">更新时间</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">312</div>
+                                    <div class="stat-label">评论数</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">4.2K</div>
+                                    <div class="stat-label">阅读量</div>
+                                </div>
+                            </div>
+                        </div>
+                        <footer class="project-footer">
+                            <div class="project-status">
+                                <span class="status-dot"></span>
+                                每周更新
+                            </div>
+                            <a href="#" class="project-link">
+                                阅读全文
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                                </svg>
+                            </a>
+                        </footer>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- 音乐分享区域 -->
+        <section class="section music-share" id="music-share">
+            <div class="music-wave"></div>
+            <div class="container">
+                <h2 class="section-title">音乐分享</h2>
+                <p class="section-subtitle">发现美好旋律，分享音乐故事</p>
+                
+                <div class="music-grid">
+                    <!-- 每周精选 -->
+                    <article class="music-card featured" style="--card-index: 0;">
+                        <div class="music-cover">
+                            <div class="cover-overlay">
+                                <button class="play-button">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M5 3l14 9-14 9V3z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="music-info">
+                            <div class="music-badge">每周精选</div>
+                            <h3 class="music-title">治愈系音乐精选集</h3>
+                            <div class="music-meta">
+                                <span class="artist">Various Artists</span>
+                                <span class="duration">12 首</span>
+                            </div>
+                            <p class="music-description">
+                                精心挑选的治愈系音乐，让心灵沉淀，找回内心的平静。包含钢琴、轻音乐、自然音等多种风格。
+                            </p>
+                            <div class="music-tags">
+                                <span class="tag">治愈</span>
+                                <span class="tag">轻音乐</span>
+                                <span class="tag">钢琴</span>
+                            </div>
+                            <div class="music-stats">
+                                <div class="stat">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                    </svg>
+                                    <span>2.8k</span>
+                                </div>
+                                <div class="stat">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"/>
+                                    </svg>
+                                    <span>1.2k</span>
+                                </div>
+                                <div class="stat">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                                    </svg>
+                                    <span>收藏</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 最新推荐 -->
+                    <article class="music-card" style="--card-index: 1;">
+                        <div class="music-cover">
+                            <div class="cover-overlay">
+                                <button class="play-button">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M5 3l14 9-14 9V3z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="music-info">
+                            <div class="music-badge new">最新推荐</div>
+                            <h3 class="music-title">电影配乐精选</h3>
+                            <div class="music-meta">
+                                <span class="artist">Hans Zimmer & More</span>
+                                <span class="duration">15 首</span>
+                            </div>
+                            <p class="music-description">
+                                精选多部经典电影的配乐作品，感受电影的震撼力量。包含《盗梦空间》、《星际穿越》等经典配乐。
+                            </p>
+                            <div class="music-tags">
+                                <span class="tag">电影</span>
+                                <span class="tag">史诗</span>
+                                <span class="tag">配乐</span>
+                            </div>
+                            <div class="music-stats">
+                                <div class="stat">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                    </svg>
+                                    <span>3.5k</span>
+                                </div>
+                                <div class="stat">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"/>
+                                    </svg>
+                                    <span>1.8k</span>
+                                </div>
+                                <div class="stat">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                                    </svg>
+                                    <span>收藏</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 经典回顾 -->
+                    <article class="music-card" style="--card-index: 2;">
+                        <div class="music-cover">
+                            <div class="cover-overlay">
+                                <button class="play-button">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M5 3l14 9-14 9V3z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="music-info">
+                            <div class="music-badge classic">经典回顾</div>
+                            <h3 class="music-title">爵士乐经典合集</h3>
+                            <div class="music-meta">
+                                <span class="artist">Jazz Masters</span>
+                                <span class="duration">18 首</span>
+                            </div>
+                            <p class="music-description">
+                                精选爵士乐历史上最具代表性的作品，带您重温爵士乐的黄金年代。包含多位传奇艺术家的代表作。
+                            </p>
+                            <div class="music-tags">
+                                <span class="tag">爵士</span>
+                                <span class="tag">经典</span>
+                                <span class="tag">复古</span>
+                            </div>
+                            <div class="music-stats">
+                                <div class="stat">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                    </svg>
+                                    <span>4.2k</span>
+                                </div>
+                                <div class="stat">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"/>
+                                    </svg>
+                                    <span>2.1k</span>
+                                </div>
+                                <div class="stat">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                                    </svg>
+                                    <span>收藏</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- 智能体区域 -->
+        <section class="section write-email" id="write-email">
+            <div class="container">
+                <h2 class="section-title">AI 智能助手</h2>
+                <p class="section-subtitle">多场景智能对话，让交流更轻松</p>
+                
+                <!-- 功能选择区 -->
+                <div class="ai-features">
+                    <div class="feature-tabs">
+                        <button class="feature-tab" data-feature="email">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                <path d="M22 6l-10 7L2 6"/>
+                            </svg>
+                            <span>邮件助手</span>
+                        </button>
+                        <button class="feature-tab" data-feature="chat">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                            </svg>
+                            <span>智能对话</span>
+                        </button>
+                        <button class="feature-tab" data-feature="translate">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+                                <path d="M2 12h20"/>
+                            </svg>
+                            <span>翻译助手</span>
+                        </button>
                     </div>
-                    <div class="portfolio-item">
-                        <div class="portfolio-image">
-                            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=600&q=80" alt="数据分析工具">
-                            <div class="portfolio-overlay">
-                                <div class="portfolio-info">
-                                    <h3>数据分析工具</h3>
-                                    <p>商业数据可视化平台</p>
+                </div>
+
+                <!-- 隐藏的文件上传输入框 -->
+                <input type="file" id="file-upload" style="display: none;" multiple>
+
+                <!-- 邮件助手功能 -->
+                <div class="feature-container" data-feature="email">
+                    <div class="email-editor-container">
+                        <!-- 左侧输入区域 -->
+                        <div class="input-panel">
+                            <div class="panel-header">
+                                <h2>邮件助手</h2>
+                                <div class="panel-controls">
+                                    <button class="attachment-btn" title="添加附件">
+                                        <svg viewBox="0 0 24 24" class="paperclip-icon">
+                                            <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="editor-content">
+                                <div class="email-form">
+                                    <div class="form-group">
+                                        <div class="content-editor" contenteditable="true" placeholder="请输入您想要处理的内容..."></div>
+                                    </div>
+                                    <div class="attachments-list">
+                                        <!-- 附件列表将在这里动态显示 -->
+                                    </div>
+                                </div>
+                                <div class="editor-tools">
+                                    <button class="tool-btn" title="清空内容">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3-3h6M4 6h16"/>
+                                        </svg>
+                                    </button>
+                                    <button class="tool-btn" title="语法检查">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M9 11l3 3L22 4"/>
+                                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                                        </svg>
+                                    </button>
+                                    <button class="send-btn">生成内容</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 右侧输出区域 -->
+                        <div class="output-panel">
+                            <div class="panel-header">
+                                <h2>AI 生成结果</h2>
+                                <div class="panel-controls">
+                                    <button class="copy-btn" title="复制到剪贴板">
+                                        <svg viewBox="0 0 24 24" class="copy-icon">
+                                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-2"/>
+                                            <path d="M16 2H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="ai-response">
+                                <div class="email-preview">
+                                    <div class="preview-content">
+                                        <p class="placeholder-text">AI 将根据您的输入生成内容...</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
 
-        <!-- 联系我区域 -->
-        <section class="section contact" id="contact">
-            <div class="container">
-                <h2 class="section-title">联系我</h2>
-                <p class="section-subtitle">让我们开始一段对话</p>
-                <div class="contact-content">
-                    <div class="contact-info">
-                        <div class="info-item">
-                            <svg class="info-icon" viewBox="0 0 24 24">
-                                <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/>
-                            </svg>
-                            <div class="info-text">
-                                <h3>社交媒体</h3>
-                                <p>关注我的最新动态</p>
+                <!-- 智能对话功能 -->
+                <div class="feature-container" data-feature="chat">
+                    <div class="chat-container">
+                        <!-- 左侧输入区域 -->
+                        <div class="chat-input-panel">
+                            <div class="panel-header">
+                                <h2>智能对话</h2>
+                            </div>
+                            <div class="editor-content">
+                                <div class="content-editor" contenteditable="true" placeholder="请输入您想要对话的内容..."></div>
+                                <div class="editor-tools">
+                                    <button class="tool-btn" title="清空内容">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3-3h6M4 6h16"/>
+                                        </svg>
+                                    </button>
+                                    <button class="send-btn">发送消息</button>
+                                </div>
                             </div>
                         </div>
-                        <div class="info-item">
-                            <svg class="info-icon" viewBox="0 0 24 24">
-                                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-                            </svg>
-                            <div class="info-text">
-                                <h3>邮件联系</h3>
-                                <p>随时恭候您的来信</p>
+
+                        <!-- 右侧输出区域 -->
+                        <div class="chat-output-panel">
+                            <div class="panel-header">
+                                <h2>AI 回复</h2>
+                                <div class="panel-controls">
+                                    <button class="copy-btn" title="复制到剪贴板">
+                                        <svg viewBox="0 0 24 24" class="copy-icon">
+                                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-2"/>
+                                            <path d="M16 2H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="ai-response">
+                                <div class="preview-content">
+                                    <p class="placeholder-text">AI 将根据您的输入生成内容...</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <form class="contact-form" action="mailto:hello_wwj@163.com" method="post" enctype="text/plain">
-                        <div class="form-group">
-                            <input type="text" name="name" placeholder="您的姓名" required>
+                </div>
+
+                <!-- 翻译助手功能 -->
+                <div class="feature-container" data-feature="translate">
+                    <div class="translate-container">
+                        <!-- 左侧输入区域 -->
+                        <div class="translate-input-panel">
+                            <div class="panel-header">
+                                <h2>翻译助手</h2>
+                                <div class="panel-controls">
+                                    <select class="language-selector">
+                                        <option value="auto">自动检测</option>
+                                        <option value="zh">中文</option>
+                                        <option value="en">英文</option>
+                                        <option value="ja">日文</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="editor-content">
+                                <div class="content-editor" contenteditable="true" placeholder="请输入要翻译的文本..."></div>
+                                <div class="editor-tools">
+                                    <button class="tool-btn" title="清空内容">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3-3h6M4 6h16"/>
+                                        </svg>
+                                    </button>
+                                    <button class="send-btn">翻译文本</button>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <input type="email" name="email" placeholder="您的邮箱" required>
+
+                        <!-- 右侧输出区域 -->
+                        <div class="translate-output-panel">
+                            <div class="panel-header">
+                                <h2>翻译结果</h2>
+                                <div class="panel-controls">
+                                    <select class="language-selector">
+                                        <option value="zh">中文</option>
+                                        <option value="en">英文</option>
+                                        <option value="ja">日文</option>
+                                    </select>
+                                    <button class="copy-btn" title="复制到剪贴板">
+                                        <svg viewBox="0 0 24 24" class="copy-icon">
+                                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-2"/>
+                                            <path d="M16 2H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="ai-response">
+                                <div class="preview-content">
+                                    <p class="placeholder-text">翻译结果将在这里显示...</p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <textarea name="message" placeholder="您的留言" required></textarea>
-                        </div>
-                        <button type="submit" class="submit-button">发送消息</button>
-                    </form>
+                    </div>
                 </div>
             </div>
         </section>
@@ -180,483 +555,6 @@
     </div>
 
     <!-- JavaScript -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const container = document.querySelector('.fullpage-container');
-            const sections = document.querySelectorAll('.section');
-            const indicators = document.querySelectorAll('.indicator');
-            const navLinks = document.querySelectorAll('.nav-link');
-            const contentEditor = document.querySelector('.content-editor');
-            const previewContent = document.querySelector('.preview-content');
-            const emailEditorContainer = document.querySelector('.email-editor-container');
-            let currentSection = 0;
-            let isAnimating = false;
-
-            // 检测是否为移动设备
-            const isMobileDevice = () => {
-                return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
-            };
-
-            // 初始化页面样式
-            function initializePageStyle() {
-                if (isMobileDevice()) {
-                    // 移动端使用原生滚动
-                    container.style.transform = 'none';
-                    container.style.position = 'static';
-                    container.style.height = 'auto';
-                    sections.forEach(section => {
-                        section.style.position = 'relative';
-                        section.style.height = '100vh';
-                    });
-                    // 隐藏页面指示器
-                    document.querySelector('.page-indicator').style.display = 'none';
-                } else {
-                    // 桌面端使用幻灯片效果
-                    container.style.transform = 'translateY(0)';
-                    container.style.position = 'fixed';
-                    container.style.height = '100vh';
-                    sections.forEach(section => {
-                        section.style.position = 'absolute';
-                        section.style.height = '100vh';
-                    });
-                    document.querySelector('.page-indicator').style.display = 'flex';
-                }
-            }
-
-            // 更新活动状态
-            function updateActiveState(index) {
-                // 移除所有导航链接的活动状态
-                document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
-                // 找到对应索引的导航链接并添加活动状态
-                const activeLink = document.querySelector(`.nav-link[data-index="${index}"]`);
-                if (activeLink && index !== 0) {
-                    activeLink.classList.add('active');
-                }
-                
-                if (!isMobileDevice()) {
-                    // 仅在桌面端更新指示器状态
-                    indicators.forEach(indicator => indicator.classList.remove('active'));
-                    indicators[index].classList.add('active');
-                }
-            }
-
-            // 切换到指定页面
-            function goToSection(index) {
-                if (isMobileDevice()) {
-                    // 移动端使用平滑滚动
-                    const targetSection = sections[index];
-                    targetSection.scrollIntoView({ behavior: 'smooth' });
-                    updateActiveState(index);
-                } else {
-                    // 桌面端使用幻灯片效果
-                    if (isAnimating || index === currentSection) return;
-                    if (index < 0 || index >= sections.length) return;
-                    
-                    isAnimating = true;
-                    const translateY = -100 * index;
-                    container.style.transform = `translateY(${translateY}vh)`;
-                    currentSection = index;
-                    updateActiveState(index);
-
-                    setTimeout(() => {
-                        isAnimating = false;
-                    }, 1000);
-                }
-            }
-
-            // 检查是否在可滚动区域内
-            function isInScrollableArea(target) {
-                const editorArea = contentEditor.contains(target) || target === contentEditor;
-                const previewArea = previewContent.contains(target) || target === previewContent;
-                const emailPreview = document.querySelector('.email-preview');
-                const emailPreviewArea = emailPreview && (emailPreview.contains(target) || target === emailPreview);
-                
-                return editorArea || previewArea || emailPreviewArea;
-            }
-
-            // 监听鼠标滚轮
-            function handleWheel(e) {
-                if (isMobileDevice()) {
-                    // 移动端不处理滚轮事件
-                    return;
-                }
-
-                if (isAnimating) return;
-
-                // 检查是否在可滚动区域内
-                if (isInScrollableArea(e.target)) {
-                    // 在可滚动区域内，阻止页面切换
-                    e.stopPropagation();
-                    return;
-                }
-
-                // 在其他区域正常切换页面
-                if (e.deltaY > 0 && currentSection < sections.length - 1) {
-                    goToSection(currentSection + 1);
-                } else if (e.deltaY < 0 && currentSection > 0) {
-                    goToSection(currentSection - 1);
-                }
-            }
-
-            // 初始化页面样式
-            initializePageStyle();
-
-            // 监听窗口大小变化
-            window.addEventListener('resize', initializePageStyle);
-
-            // 添加事件监听器
-            document.addEventListener('wheel', handleWheel);
-            
-            // 导航链接点击事件
-            navLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const index = parseInt(link.getAttribute('data-index'));
-                    goToSection(index);
-                });
-            });
-
-            // Logo点击事件
-            document.querySelector('.logo-link').addEventListener('click', (e) => {
-                e.preventDefault();
-                goToSection(0);
-            });
-
-            // 指示器点击事件
-            indicators.forEach(indicator => {
-                indicator.addEventListener('click', () => {
-                    const index = parseInt(indicator.getAttribute('data-index'));
-                    goToSection(index);
-                });
-            });
-
-            // 开始使用按钮点击事件
-            document.querySelector('.cta-button').addEventListener('click', (e) => {
-                e.preventDefault();
-                goToSection(1);
-            });
-        });
-    </script>
-
-    <!-- 添加必要的 JavaScript -->
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // 获取必要的DOM元素
-        const attachmentBtn = document.querySelector('.attachment-btn');
-        const fileUpload = document.querySelector('#file-upload');
-        const attachmentsList = document.querySelector('.attachments-list');
-        const contentEditor = document.querySelector('.content-editor');
-        const sendBtn = document.querySelector('.send-btn');
-        const previewContent = document.querySelector('.preview-content');
-        const copyBtn = document.querySelector('.copy-btn');
-
-        // 存储附件列表
-        let attachments = [];
-
-        // 附件按钮点击事件
-        attachmentBtn.addEventListener('click', () => {
-            fileUpload.click();
-        });
-
-        // 文件上传处理
-        fileUpload.addEventListener('change', (e) => {
-            const files = Array.from(e.target.files);
-            files.forEach(file => {
-                if (attachments.length >= 5) {
-                    alert('最多只能添加5个附件');
-                    return;
-                }
-                attachments.push(file);
-                displayAttachment(file);
-            });
-            fileUpload.value = ''; // 清空input，允许重复选择相同文件
-        });
-
-        // 显示附件
-        function displayAttachment(file) {
-            const div = document.createElement('div');
-            div.className = 'attachment-item';
-            div.innerHTML = `
-                <span class="file-name">${file.name}</span>
-                <button class="remove-file" data-name="${file.name}">×</button>
-            `;
-            attachmentsList.appendChild(div);
-
-            // 删除附件事件
-            div.querySelector('.remove-file').addEventListener('click', function() {
-                const fileName = this.getAttribute('data-name');
-                attachments = attachments.filter(f => f.name !== fileName);
-                div.remove();
-            });
-        }
-
-        // 生成回复按钮点击事件
-        sendBtn.addEventListener('click', async () => {
-            const content = contentEditor.innerText.trim();
-            if (!content) {
-                alert('请输入邮件内容');
-                return;
-            }
-
-            // 显示加载状态
-            previewContent.innerHTML = '<div class="loading">正在生成回复...</div>';
-
-            try {
-                const response = await generateEmailResponse(content, attachments);
-                displayResponse(response);
-            } catch (error) {
-                previewContent.innerHTML = `
-                    <div class="error-message">
-                        生成回复时出错
-                        <div class="error-detail">${error.message}</div>
-                    </div>
-                `;
-            }
-        });
-
-        // 生成邮件回复
-        async function generateEmailResponse(content, attachments = []) {
-            // 构建系统提示词
-            const systemPrompt = `你是一个专业的邮件助手，需要帮助用户处理邮件回复。请严格按照以下规则处理：
-
-邮件收件人识别（按优先级）：
-1. 用户明确指定：
-   - 首先检查用户输入中是否明确指定了收件人
-   - 如果用户明确提到"回复给xxx"或类似表述，则使用该人作为收件人
-
-2. 邮件签名信息：
-   - 如果用户没有明确指定，查找原始邮件中的签名信息
-   - 识别邮件底部的发件人姓名、职位等信息
-
-3. 邮件头部信息：
-   - 如果没有签名信息，查看邮件头部的发件人(From)字段
-   - 使用发件人字段中的姓名作为收件人
-
-4. 其他识别信息：
-   - 如果以上都没有，查找邮件正文中的称谓、问候语等
-   - 提取可能是发件人的名字或称谓
-
-邮件内容理解：
-1. 上下文分析：
-   - 理解原始邮件的主要问题或请求
-   - 识别所有相关方及其关系
-   - 确保回复准确对应原始问题
-
-2. 特殊名称处理：
-   - 保持所有人名的原始拼写
-   - 保持公司名称、产品名称的原始拼写
-   - 保持专业术语的原始表达
-   - 确保中英文一致性
-
-回复格式规范：
-1. 英文格式：
-   - 开头：Dear [收件人],
-   - 正文：简洁明了的回应
-   - 结尾：仅使用 "Best regards," 作为结束语
-
-2. 中文格式：
-   - 开头：[收件人]，
-   - 正文：简洁明了的回应
-   - 结尾：仅使用 "此致," 作为结束语
-
-3. 双语处理：
-   [英文回复]
-   
-   =========
-   中文译文：
-   
-   [中文回复]
-
-注意事项：
-1. 确保收件人准确性
-2. 保持回复简洁明了
-3. 不添加未提及的信息
-4. 不添加签名、职位、公司等信息
-5. 结尾只用简单的客套语，不要添加"[你的名字]"、"[你的职位]"等占位符
-
-请根据以上规则，生成专业的邮件回复。`;
-
-            try {
-                // 检查是否要求英文回复
-                const isEnglishRequired = content.toLowerCase().includes('用英文') || 
-                                        content.toLowerCase().includes('用英语') || 
-                                        content.toLowerCase().includes('in english');
-                
-                // 移除"用英文回复"等指令
-                let cleanContent = content;
-                if (isEnglishRequired) {
-                    cleanContent = content.replace(/用英文回复|用英文|用英语|in english/gi, '').trim();
-                }
-
-                // 构建用户提示词
-                const userPrompt = `请帮我回复以下邮件内容：${cleanContent}
-${isEnglishRequired ? '请用英文回复，并在回复后附上中文译文。' : '请用中文回复。'}
-${attachments.length > 0 ? `附件列表：\n${attachments.map(file => `- ${file.name}`).join('\n')}` : ''}`;
-
-                // 调用 API
-                const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer sk-ce5f0690af0d454cb4a08054db2b9102'
-                    },
-                    body: JSON.stringify({
-                        model: 'deepseek-chat',
-                        messages: [
-                            {
-                                role: 'system',
-                                content: systemPrompt
-                            },
-                            {
-                                role: 'user',
-                                content: userPrompt
-                            }
-                        ],
-                        temperature: 0.7,
-                        max_tokens: 2000,
-                        top_p: 0.95,
-                        frequency_penalty: 0,
-                        presence_penalty: 0
-                    })
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error?.message || 'AI 服务请求失败');
-                }
-
-                const result = await response.json();
-                return result.choices[0].message.content;
-
-            } catch (error) {
-                console.error('生成回复失败:', error);
-                throw new Error('生成回复时发生错误，请稍后重试');
-            }
-        }
-
-        // 显示回复内容
-        function displayResponse(response) {
-            // 添加邮件主题
-            const subject = '邮件回复';
-            
-            previewContent.innerHTML = `
-                <div class="email-subject">${subject}</div>
-                <div class="email-body">${response.replace(/\n/g, '<br>')}</div>
-            `;
-        }
-
-        // 复制按钮功能
-        copyBtn.addEventListener('click', () => {
-            const emailBody = previewContent.querySelector('.email-body');
-            if (!emailBody) {
-                alert('没有可复制的内容');
-                return;
-            }
-
-            // 创建临时文本区域
-            const textarea = document.createElement('textarea');
-            textarea.value = emailBody.innerText;
-            document.body.appendChild(textarea);
-            textarea.select();
-            
-            try {
-                document.execCommand('copy');
-                alert('内容已复制到剪贴板');
-            } catch (err) {
-                alert('复制失败，请手动复制');
-            }
-            
-            document.body.removeChild(textarea);
-        });
-
-        // 内容编辑器的 placeholder 处理
-        contentEditor.addEventListener('focus', function() {
-            if (this.innerHTML === '') {
-                this.innerHTML = '';
-            }
-        });
-
-        contentEditor.addEventListener('blur', function() {
-            if (this.innerHTML === '') {
-                this.innerHTML = '';
-            }
-        });
-
-        // 添加粘贴事件处理
-        contentEditor.addEventListener('paste', function(e) {
-            // 阻止默认粘贴行为
-            e.preventDefault();
-            
-            const clipboardData = e.clipboardData || window.clipboardData;
-            const items = clipboardData.items;
-
-            // 检查是否有图片
-            let hasImage = false;
-            for (let i = 0; i < items.length; i++) {
-                if (items[i].type.indexOf('image') !== -1) {
-                    hasImage = true;
-                    // 获取图片文件
-                    const file = items[i].getAsFile();
-                    // 处理图片
-                    handlePastedImage(file);
-                    break;
-                }
-            }
-
-            // 如果不是图片，则作为纯文本处理
-            if (!hasImage) {
-                const text = clipboardData.getData('text/plain');
-                // 使用 document.execCommand 插入纯文本
-                if (document.queryCommandSupported('insertText')) {
-                    document.execCommand('insertText', false, text);
-                } else {
-                    // 如果 insertText 命令不支持，则使用替代方法
-                    const selection = window.getSelection();
-                    if (selection.rangeCount) {
-                        const range = selection.getRangeAt(0);
-                        range.deleteContents();
-                        const textNode = document.createTextNode(text);
-                        range.insertNode(textNode);
-                        range.collapse(false);
-                        selection.removeAllRanges();
-                        selection.addRange(range);
-                    }
-                }
-            }
-        });
-
-        // 处理粘贴的图片
-        function handlePastedImage(file) {
-            if (!file) return;
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = document.createElement('img');
-                img.src = e.target.result;
-                img.style.maxWidth = '100%';
-                img.style.height = 'auto';
-                img.style.margin = '10px 0';
-                img.style.borderRadius = '4px';
-                
-                // 获取当前选区
-                const selection = window.getSelection();
-                if (selection.rangeCount) {
-                    const range = selection.getRangeAt(0);
-                    range.deleteContents();
-                    range.insertNode(img);
-                    // 移动光标到图片后面
-                    range.setStartAfter(img);
-                    range.setEndAfter(img);
-                    selection.removeAllRanges();
-                    selection.addRange(range);
-                    // 添加换行
-                    const br = document.createElement('br');
-                    img.parentNode.insertBefore(br, img.nextSibling);
-                }
-            };
-            reader.readAsDataURL(file);
-        }
-    });
-    </script>
+    <script src="js/script.js"></script>
 </body>
 </html> 
