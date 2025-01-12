@@ -140,9 +140,21 @@ function initAnimations() {
 
     // 记录已经播放过动画的section
     const animatedSections = new Set();
+    // 记录目标section
+    let targetSection = null;
+    // 记录是否正在快速跳转
+    let isQuickJumping = false;
+    // 快速跳转的超时时间
+    const QUICK_JUMP_TIMEOUT = 1000;
+    let quickJumpTimer = null;
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
+            // 如果正在快速跳转且当前section不是目标section，则跳过动画
+            if (isQuickJumping && entry.target !== targetSection) {
+                return;
+            }
+
             if (entry.isIntersecting && !animatedSections.has(entry.target)) {
                 // 记录该section已播放动画
                 animatedSections.add(entry.target);
@@ -175,6 +187,12 @@ function initAnimations() {
                 
                 // 添加 active 类触发动画
                 entry.target.classList.add('active');
+
+                // 如果是目标section，结束快速跳转状态
+                if (entry.target === targetSection) {
+                    isQuickJumping = false;
+                    targetSection = null;
+                }
             } else if (!entry.isIntersecting) {
                 // 当元素离开视图时，从Set中移除，这样当它再次进入视图时可以重新播放动画
                 animatedSections.delete(entry.target);
@@ -192,11 +210,28 @@ function initAnimations() {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             const targetId = this.getAttribute('href').substring(1);
-            const targetSection = document.getElementById(targetId);
+            targetSection = document.getElementById(targetId);
+            
             if (targetSection) {
-                // 点击导航时清除动画记录，确保可以重新播放
+                // 设置快速跳转状态
+                isQuickJumping = true;
+                
+                // 清除之前的定时器
+                if (quickJumpTimer) {
+                    clearTimeout(quickJumpTimer);
+                }
+                
+                // 清除动画记录
                 animatedSections.clear();
+                
+                // 滚动到目标位置
                 targetSection.scrollIntoView({ behavior: 'smooth' });
+                
+                // 设置超时，如果超过一定时间还没到达目标section，就取消快速跳转状态
+                quickJumpTimer = setTimeout(() => {
+                    isQuickJumping = false;
+                    targetSection = null;
+                }, QUICK_JUMP_TIMEOUT);
             }
         });
     });
