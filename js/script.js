@@ -114,28 +114,15 @@ const utils = {
     }
 };
 
-// 初始化所有功能
-document.addEventListener('DOMContentLoaded', function() {
-    // 初始化动画系统
-    initAnimations();
-    
-    // 初始化页面指示器
-    initPageIndicators();
-    
-    // 初始化功能切换
-    initFeatureSwitch();
-    
-    // 初始化 AI 功能
-    initAIFeatures();
-});
-
 // 动画系统初始化
 function initAnimations() {
     const sections = document.querySelectorAll('.section');
+    const indicators = document.querySelectorAll('.indicator');
+    const navLinks = document.querySelectorAll('.nav-link');
     const options = {
         root: null,
-        rootMargin: '-20% 0px',
-        threshold: 0
+        rootMargin: '0px',
+        threshold: 0.5
     };
 
     // 记录已经播放过动画的section
@@ -147,55 +134,247 @@ function initAnimations() {
     // 快速跳转的超时时间
     const QUICK_JUMP_TIMEOUT = 1000;
     let quickJumpTimer = null;
+    // 记录滚动方向
+    let lastScrollY = window.scrollY;
+    let scrollDirection = 'down';
+    // 记录上一个激活的section
+    let lastActiveSection = null;
+
+    // 重置section的动画状态
+    function resetSectionAnimation(section, isHome = false) {
+        if (!section) return;
+
+        // 移除active类
+        section.classList.remove('active');
+        
+        // 重置所有子元素的动画状态
+        const projectCards = section.querySelectorAll('.project-card');
+        const musicCards = section.querySelectorAll('.music-card');
+        const featureTabs = section.querySelectorAll('.feature-tab');
+        const featureContainer = section.querySelector('.feature-container.active');
+        
+        // 重置动画
+        const resetAnimation = (element) => {
+            if (element) {
+                element.style.animation = 'none';
+                element.offsetHeight; // 触发重排
+                element.style.animation = null;
+                // 如果是首页元素，重置动画延迟
+                if (isHome) {
+                    element.style.animationDelay = element.dataset.originalDelay || '0s';
+                }
+            }
+        };
+        
+        projectCards.forEach(resetAnimation);
+        musicCards.forEach(resetAnimation);
+        featureTabs.forEach(resetAnimation);
+        resetAnimation(featureContainer);
+        
+        // 强制重排
+        void section.offsetHeight;
+        
+        // 添加active类触发动画
+        requestAnimationFrame(() => {
+            section.classList.add('active');
+        });
+    }
+
+    // 处理首页动画的专门函数
+    function handleHomeAnimation(section, isScrolling = false) {
+        if (!section || section.id !== 'home') return;
+        
+        // 移除所有动画相关的状态
+        animatedSections.delete(section);
+        section.classList.remove('active');
+        
+        // 获取所有需要动画的元素
+        const title = section.querySelector('.hero-title');
+        const subtitle = section.querySelector('.hero-subtitle');
+        const buttons = section.querySelector('.hero-buttons');
+        
+        // 重置所有元素的状态
+        [title, subtitle, buttons].forEach(element => {
+            if (element) {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(30px)';
+                element.style.transition = 'none';
+            }
+        });
+        
+        // 强制重排
+        void section.offsetHeight;
+
+        // 如果是滚动触发，添加延迟等待滚动完成
+        const scrollDelay = isScrolling ? 300 : 0;
+        
+        // 按顺序应用动画
+        setTimeout(() => {
+            requestAnimationFrame(() => {
+                section.classList.add('active');
+                
+                if (title) {
+                    title.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+                    title.style.opacity = '1';
+                    title.style.transform = 'translateY(0)';
+                }
+                
+                if (subtitle) {
+                    setTimeout(() => {
+                        subtitle.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+                        subtitle.style.opacity = '1';
+                        subtitle.style.transform = 'translateY(0)';
+                    }, 150);
+                }
+                
+                if (buttons) {
+                    setTimeout(() => {
+                        buttons.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+                        buttons.style.opacity = '1';
+                        buttons.style.transform = 'translateY(0)';
+                    }, 300);
+                }
+            });
+        }, scrollDelay);
+    }
+
+    // 更新导航和指示器状态的函数
+    function updateNavigationState(activeSection) {
+        if (!activeSection) return;
+
+        const sectionIndex = Array.from(sections).indexOf(activeSection);
+        
+        // 更新指示器状态
+        indicators.forEach(ind => ind.classList.remove('active'));
+        if (indicators[sectionIndex]) {
+            indicators[sectionIndex].classList.add('active');
+        }
+
+        // 更新导航状态
+        navLinks.forEach(link => link.classList.remove('active'));
+        const sectionId = activeSection.id;
+        const activeLink = document.querySelector(`.nav-link[href="#${sectionId}"]`);
+        if (activeLink) {
+            activeLink.classList.add('active');
+        }
+
+        // 更新上一个激活的section
+        lastActiveSection = activeSection;
+    }
+
+    // 处理滚动到指定section的函数
+    function scrollToSection(section) {
+        if (section) {
+            const currentIndex = Array.from(sections).indexOf(document.elementFromPoint(window.innerWidth / 2, window.innerHeight / 2).closest('.section'));
+            const targetIndex = Array.from(sections).indexOf(section);
+            scrollDirection = targetIndex > currentIndex ? 'down' : 'up';
+            
+            // 设置快速跳转状态
+            isQuickJumping = true;
+            targetSection = section;
+            
+            // 清除之前的定时器
+            if (quickJumpTimer) {
+                clearTimeout(quickJumpTimer);
+            }
+            
+            // 更新URL hash，但不触发滚动
+            const sectionId = section.id;
+            history.replaceState(null, '', `#${sectionId}`);
+            
+            // 计算目标滚动位置
+            const offset = section.offsetTop;
+            
+            // 使用scrollTo而不是scrollIntoView，以确保精确定位
+            window.scrollTo({
+                top: offset,
+                behavior: 'smooth'
+            });
+            
+            // 立即更新导航状态
+            updateNavigationState(section);
+
+            // 如果是首页，使用专门的动画处理函数，并标记为滚动触发
+            if (section.id === 'home') {
+                handleHomeAnimation(section, true);
+            }
+            // 如果是目标页面，重置并播放动画
+            else if (section === targetSection) {
+                // 从animatedSections中移除目标section，允许重新播放动画
+                animatedSections.delete(section);
+                setTimeout(() => {
+                    resetSectionAnimation(section);
+                }, 300); // 添加300ms延迟，等待滚动开始
+            }
+            
+            // 设置超时，如果超过一定时间还没到达目标section，就取消快速跳转状态
+            quickJumpTimer = setTimeout(() => {
+                isQuickJumping = false;
+                targetSection = null;
+            }, QUICK_JUMP_TIMEOUT);
+        }
+    }
+
+    // 监听滚动事件来更新滚动方向和导航状态
+    let scrollTimeout;
+    window.addEventListener('scroll', () => {
+        scrollDirection = window.scrollY > lastScrollY ? 'down' : 'up';
+        lastScrollY = window.scrollY;
+
+        // 使用防抖来减少更新频率
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            // 找到当前最接近视口中心的section
+            const viewportCenter = window.innerHeight / 2;
+            let closestSection = null;
+            let minDistance = Infinity;
+
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                const distance = Math.abs(rect.top + rect.height / 2 - viewportCenter);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closestSection = section;
+                }
+            });
+
+            if (closestSection && closestSection !== lastActiveSection) {
+                updateNavigationState(closestSection);
+            }
+        }, 100);
+    }, { passive: true });
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            // 如果正在快速跳转且当前section不是目标section，则跳过动画
+            // 如果正在快速跳转且当前section不是目标section，跳过动画
             if (isQuickJumping && entry.target !== targetSection) {
                 return;
             }
 
-            if (entry.isIntersecting && !animatedSections.has(entry.target)) {
-                // 记录该section已播放动画
-                animatedSections.add(entry.target);
-                
-                // 移除所有动画相关的类
-                entry.target.classList.remove('active');
-                
-                // 重置所有子元素的动画状态
-                const projectCards = entry.target.querySelectorAll('.project-card');
-                const musicCards = entry.target.querySelectorAll('.music-card');
-                const featureTabs = entry.target.querySelectorAll('.feature-tab');
-                const featureContainer = entry.target.querySelector('.feature-container.active');
-                
-                // 重置卡片动画
-                const resetAnimation = (element) => {
-                    if (element) {
-                        element.style.animation = 'none';
-                        element.offsetHeight; // 触发重排
-                        element.style.animation = null;
-                    }
-                };
-                
-                projectCards.forEach(resetAnimation);
-                musicCards.forEach(resetAnimation);
-                featureTabs.forEach(resetAnimation);
-                resetAnimation(featureContainer);
-                
-                // 强制重排
-                void entry.target.offsetHeight;
-                
-                // 添加 active 类触发动画
-                entry.target.classList.add('active');
+            if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+                // 首页特殊处理：使用专门的动画处理函数，并标记为滚动触发
+                if (entry.target.id === 'home') {
+                    handleHomeAnimation(entry.target, true);
+                    return;
+                }
+
+                // 其他页面：如果是目标section或不在快速跳转中，播放动画
+                if (!isQuickJumping || entry.target === targetSection) {
+                    // 重置并播放动画
+                    resetSectionAnimation(entry.target);
+                }
 
                 // 如果是目标section，结束快速跳转状态
                 if (entry.target === targetSection) {
                     isQuickJumping = false;
                     targetSection = null;
                 }
-            } else if (!entry.isIntersecting) {
-                // 当元素离开视图时，从Set中移除，这样当它再次进入视图时可以重新播放动画
-                animatedSections.delete(entry.target);
+            } else {
+                // 只有当元素完全离开视图时才重置动画状态
+                if (entry.intersectionRatio === 0) {
+                    // 允许所有section在下次进入视图时重新播放动画
+                    animatedSections.delete(entry.target);
+                }
             }
         });
     }, options);
@@ -205,84 +384,67 @@ function initAnimations() {
     });
 
     // 导航点击事件处理
-    const navLinks = document.querySelectorAll('.nav-link');
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             const targetId = this.getAttribute('href').substring(1);
-            targetSection = document.getElementById(targetId);
-            
-            if (targetSection) {
-                // 设置快速跳转状态
-                isQuickJumping = true;
-                
-                // 清除之前的定时器
-                if (quickJumpTimer) {
-                    clearTimeout(quickJumpTimer);
-                }
-                
-                // 清除动画记录
-                animatedSections.clear();
-                
-                // 滚动到目标位置
-                targetSection.scrollIntoView({ behavior: 'smooth' });
-                
-                // 设置超时，如果超过一定时间还没到达目标section，就取消快速跳转状态
-                quickJumpTimer = setTimeout(() => {
-                    isQuickJumping = false;
-                    targetSection = null;
-                }, QUICK_JUMP_TIMEOUT);
-            }
+            const section = document.getElementById(targetId);
+            scrollToSection(section);
         });
     });
-}
 
-// 页面指示器初始化
-function initPageIndicators() {
-    const sections = document.querySelectorAll('.section');
-    const indicators = document.querySelectorAll('.indicator');
-    const navLinks = document.querySelectorAll('.nav-link');
-
-    // 更新激活状态
-    function updateActiveStates() {
-        const scrollPosition = window.scrollY;
-        const windowHeight = window.innerHeight;
-        
-        sections.forEach((section, index) => {
-            const rect = section.getBoundingClientRect();
-            const sectionTop = rect.top + scrollPosition;
-            
-            // 当section进入视图的1/3时激活
-            if (scrollPosition >= sectionTop - windowHeight/3) {
-                // 只更新指示器和导航状态，不处理动画
-                indicators.forEach(ind => ind.classList.remove('active'));
-                if (indicators[index]) {
-                    indicators[index].classList.add('active');
-                }
-
-                navLinks.forEach(link => link.classList.remove('active'));
-                const sectionId = section.id;
-                const activeLink = document.querySelector(`.nav-link[href="#${sectionId}"]`);
-                if (activeLink) {
-                    activeLink.classList.add('active');
-                }
-            }
-        });
-    }
-
-    // 监听滚动事件
-    window.addEventListener('scroll', updateActiveStates, { passive: true });
-
-    // 点击指示器处理
+    // 指示器点击事件处理
     indicators.forEach((indicator, index) => {
         indicator.addEventListener('click', () => {
-            sections[index].scrollIntoView({ behavior: 'smooth' });
+            scrollToSection(sections[index]);
         });
     });
 
-    // 初始化状态
-    updateActiveStates();
+    // 初始化页面状态
+    function initializePageState() {
+        // 获取当前hash
+        const hash = window.location.hash;
+        const targetSection = hash ? document.querySelector(hash) : sections[0];
+        
+        if (targetSection) {
+            // 计算目标滚动位置
+            const offset = targetSection.offsetTop;
+            
+            // 使用scrollTo精确定位
+            window.scrollTo({
+                top: offset,
+                behavior: 'auto'
+            });
+            
+            // 更新状态
+            updateNavigationState(targetSection);
+
+            // 如果是首页，使用专门的动画处理函数
+            if (targetSection.id === 'home') {
+                handleHomeAnimation(targetSection);
+            } else {
+                // 其他页面正常处理
+                resetSectionAnimation(targetSection);
+                animatedSections.add(targetSection);
+            }
+        }
+    }
+
+    // 页面加载完成后初始化状态
+    window.addEventListener('load', initializePageState);
 }
+
+// 初始化所有功能
+document.addEventListener('DOMContentLoaded', function() {
+    // 初始化动画系统
+    initAnimations();
+    
+    // 初始化功能切换
+    initFeatureSwitch();
+    
+    // 初始化 AI 功能
+    initAIFeatures();
+});
 
 // 功能切换初始化
 function initFeatureSwitch() {
@@ -548,77 +710,4 @@ async function getApiKey() {
     // TODO: 从安全的地方获取API Key
     // 可以是环境变量、后端API、加密存储等
     throw new Error('请配置API Key');
-}
-
-// 处理功能标签切换
-document.addEventListener('DOMContentLoaded', function() {
-    const featureTabs = document.querySelectorAll('.feature-tab');
-    const featureContainers = document.querySelectorAll('.feature-container');
-
-    featureTabs.forEach(tab => {
-        tab.addEventListener('click', function() {
-            const feature = this.dataset.feature;
-
-            // 更新标签状态
-            featureTabs.forEach(t => t.classList.remove('active'));
-            this.classList.add('active');
-
-            // 更新容器显示
-            featureContainers.forEach(container => {
-                if (container.dataset.feature === feature) {
-                    container.classList.add('active');
-                } else {
-                    container.classList.remove('active');
-                }
-            });
-        });
-    });
-});
-
-// 更新页面指示器和导航状态
-function updatePageIndicators() {
-    const sections = document.querySelectorAll('.section');
-    const indicators = document.querySelectorAll('.indicator');
-    const navLinks = document.querySelectorAll('.nav-link');
-
-    // 监听滚动事件
-    window.addEventListener('scroll', function() {
-        const scrollPosition = window.scrollY;
-        
-        sections.forEach((section, index) => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.clientHeight;
-            
-            if (scrollPosition >= sectionTop - sectionHeight / 3) {
-                // 更新指示器状态
-                indicators.forEach(ind => ind.classList.remove('active'));
-                if (indicators[index]) {
-                    indicators[index].classList.add('active');
-                }
-
-                // 更新导航链接状态
-                navLinks.forEach(link => link.classList.remove('active'));
-                const sectionId = section.id;
-                const activeLink = document.querySelector(`.nav-link[href="#${sectionId}"]`);
-                if (activeLink) {
-                    activeLink.classList.add('active');
-                }
-            }
-        });
-    });
-
-    // 点击指示器滚动到对应部分
-    indicators.forEach((indicator, index) => {
-        indicator.addEventListener('click', function() {
-            sections[index].scrollIntoView({ behavior: 'smooth' });
-        });
-    });
-}
-
-// 页面加载完成后初始化所有功能
-document.addEventListener('DOMContentLoaded', function() {
-    initSectionAnimations();
-    updatePageIndicators();
-    
-    // ... existing code ...
-}); 
+} 
