@@ -111,6 +111,24 @@ const utils = {
 
         // 显示处理后的内容
         previewContent.innerHTML = cleanedResponse;
+    },
+
+    validateImage(file) {
+        if (!file) {
+            throw new Error('无效的图片文件');
+        }
+
+        // 检查文件类型
+        if (!CONFIG.ALLOWED_IMAGE_TYPES.includes(file.type)) {
+            throw new Error('不支持的图片格式，请使用 JPG、PNG、GIF 或 WebP 格式');
+        }
+
+        // 检查文件大小
+        if (file.size > CONFIG.MAX_IMAGE_SIZE) {
+            throw new Error(`图片大小不能超过 ${CONFIG.MAX_IMAGE_SIZE / 1024 / 1024}MB`);
+        }
+
+        return true;
     }
 };
 
@@ -507,8 +525,10 @@ function initAIFeatures() {
             
             // 处理图片粘贴
             const items = Array.from(e.clipboardData.items);
+            let hasHandledImage = false;
+
             for (const item of items) {
-                if (item.type.startsWith('image/')) {
+                if (item.type.indexOf('image') !== -1) {
                     try {
                         const file = item.getAsFile();
                         if (file) {
@@ -528,19 +548,23 @@ function initAIFeatures() {
                                 elements.contentEditor.appendChild(document.createElement('br'));
                             };
                             reader.readAsDataURL(file);
-                            return;
+                            hasHandledImage = true;
+                            break;
                         }
                     } catch (error) {
+                        console.error('图片处理错误:', error);
                         alert(error.message);
                         return;
                     }
                 }
             }
             
-            // 处理文本粘贴
+            // 如果没有处理图片，则处理文本
+            if (!hasHandledImage) {
             const text = e.clipboardData.getData('text/plain');
             if (text) {
                 document.execCommand('insertText', false, text);
+                }
             }
         });
     }
