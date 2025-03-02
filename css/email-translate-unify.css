@@ -1,0 +1,342 @@
+/* 邮件助手和翻译助手样式统一 */
+
+/* 确保两个容器使用统一的样式 */
+.email-editor-container,
+.translate-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    width: 100%;
+    background: var(--background-color, #f8f9fa);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--glass-shadow, 0 8px 25px rgba(0, 0, 0, 0.05));
+    padding: 0;
+    margin-bottom: 30px;
+    border: none;
+}
+
+/* 统一输入和输出面板样式 */
+.input-panel,
+.output-panel,
+.translate-input-panel,
+.translate-output-panel {
+    background: #fff;
+    border-radius: 20px;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    height: 600px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: none;
+}
+
+/* 统一面板头部样式 */
+.panel-header,
+.translate-input-panel .panel-header,
+.translate-output-panel .panel-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    background: #fff;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 64px;
+    box-sizing: border-box;
+}
+
+/* 统一内容编辑器样式 */
+.content-editor,
+.translate-container .content-editor {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    bottom: 80px;
+    padding: 16px;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-y: auto;
+    background: transparent;
+    white-space: pre-wrap;
+    color: var(--primary-color, #333);
+    font-family: inherit;
+    margin-top: 0;
+}
+
+/* 统一预览内容样式 */
+.preview-content,
+.translate-container .preview-content {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    padding: 16px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-y: auto;
+    background: transparent;
+    white-space: pre-wrap;
+    color: var(--primary-color, #333);
+    font-family: inherit;
+    margin-top: 0;
+}
+
+/* 统一按钮样式 */
+.send-btn,
+.translate-container .send-btn {
+    padding: 10px 20px;
+    background-color: #3c3c3c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    align-self: flex-end;
+    margin-top: auto;
+    box-shadow: none;
+}
+
+.send-btn:hover,
+.translate-container .send-btn:hover {
+    background-color: #2a2a2a;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 统一工具按钮样式 */
+.tool-btn,
+.translate-container .tool-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.05);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #555;
+}
+
+.tool-btn:hover,
+.translate-container .tool-btn:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+/* 统一复制按钮样式 */
+.copy-btn,
+.translate-container .copy-btn {
+    border: none;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #555;
+}
+
+.copy-btn:hover,
+.translate-container .copy-btn:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+/* 统一语言选择器样式 */
+.language-selector,
+.translate-container .language-selector {
+    padding: 6px 12px;
+    background-color: rgba(0, 0, 0, 0.05);
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    margin-right: 10px;
+    outline: none;
+    transition: all 0.2s ease;
+    height: 32px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+}
+
+.language-selector:hover,
+.language-selector:focus,
+.translate-container .language-selector:hover,
+.translate-container .language-selector:focus {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* 统一编辑器工具栏样式 */
+.editor-tools,
+.translate-container .editor-tools {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    background: transparent;
+    z-index: 2;
+}
+
+/* 统一AI响应区域样式 */
+.ai-response,
+.translate-container .ai-response {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+}
+
+/* 统一占位文本样式 */
+.preview-content .placeholder-text,
+.translate-container .preview-content .placeholder-text {
+    color: var(--secondary-color, #6c757d);
+    font-style: italic;
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    margin: 0;
+    padding: 0;
+}
+
+.content-editor[contenteditable="true"]:empty:before,
+.translate-container .content-editor[contenteditable="true"]:empty:before {
+    content: attr(placeholder);
+    color: #888;
+    font-style: italic;
+    position: absolute;
+    left: 16px;
+    top: 16px;
+}
+
+/* 统一面板标题样式 */
+.panel-header h2,
+.translate-container .panel-header h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--primary-color, #4a6cf7);
+    line-height: 1.5;
+}
+
+/* 统一面板控制组样式 */
+.panel-controls,
+.translate-container .panel-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 32px;
+}
+
+/* 确保所有按钮和选择器高度一致 */
+.panel-controls button,
+.panel-controls .language-selector,
+.translate-container .panel-controls button,
+.translate-container .panel-controls .language-selector {
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+/* 统一SVG图标大小 */
+.panel-controls button svg,
+.translate-container .panel-controls button svg,
+.copy-icon,
+.paperclip-icon {
+    width: 20px;
+    height: 20px;
+}
+
+/* 统一编辑器内容区域样式 */
+.editor-content,
+.translate-container .editor-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+}
+
+/* 统一加载状态样式 */
+.loading,
+.translate-container .loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    z-index: 10;
+}
+
+.loading::after,
+.translate-container .loading::after {
+    content: '';
+    width: 30px;
+    height: 30px;
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-top-color: var(--primary-color, #4a6cf7);
+    border-radius: 50%;
+    animation: spin 1s ease-in-out infinite;
+}
+
+/* 响应式调整 */
+@media screen and (max-width: 1024px) {
+    .email-editor-container,
+    .translate-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .input-panel,
+    .output-panel,
+    .translate-input-panel,
+    .translate-output-panel {
+        height: 500px;
+    }
+}
+
+/* 确保焦点样式一致 */
+.content-editor:focus,
+.translate-container .content-editor:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+/* 确保动画定义一致 */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+} 

@@ -1,0 +1,398 @@
+/* 翻译功能样式修复 */
+
+/* 功能容器样式 */
+.feature-container {
+    display: none;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.feature-container.active {
+    display: block;
+}
+
+/* 翻译界面的容器样式 - 与邮件助手保持一致 */
+.translate-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    width: 100%;
+    background: var(--background-color, #f8f9fa);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--glass-shadow, 0 8px 25px rgba(0, 0, 0, 0.05));
+    padding: 0;
+    margin-bottom: 30px;
+    border: none;
+}
+
+/* 输入和输出面板样式 - 统一与邮件助手样式 */
+.translate-input-panel,
+.translate-output-panel {
+    background: #fff;
+    border-radius: 20px;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    height: 600px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: none;
+}
+
+/* 面板头部样式统一 */
+.translate-input-panel .panel-header,
+.translate-output-panel .panel-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    background: #fff;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* 内容编辑器样式统一 */
+.translate-container .content-editor {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    bottom: 80px;
+    padding: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    outline: none;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-y: auto;
+    background: #fff;
+    white-space: pre-wrap;
+    color: var(--primary-color, #333);
+}
+
+/* 统一预览内容样式 */
+.translate-container .preview-content {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    padding: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-y: auto;
+    background: #fff;
+    white-space: pre-wrap;
+    color: var(--primary-color, #333);
+}
+
+/* 统一按钮样式 */
+.translate-container .send-btn {
+    padding: 12px 24px;
+    background: var(--primary-color, #4a6cf7);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    align-self: flex-end;
+    margin-top: auto;
+}
+
+.translate-container .send-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 统一工具按钮样式 */
+.translate-container .tool-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.05);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #555;
+}
+
+.translate-container .tool-btn:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+/* 统一复制按钮样式 */
+.translate-container .copy-btn {
+    border: none;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #555;
+}
+
+.translate-container .copy-btn:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+/* 统一语言选择器样式 */
+.translate-container .language-selector {
+    padding: 8px 12px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    font-size: 14px;
+    color: #333;
+    background: #fff;
+    cursor: pointer;
+    margin-right: 10px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.translate-container .language-selector:hover,
+.translate-container .language-selector:focus {
+    border-color: var(--primary-color, #4a6cf7);
+}
+
+/* 统一编辑器工具栏样式 */
+.translate-container .editor-tools {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    background: transparent;
+    z-index: 2;
+}
+
+.translate-container .editor-tools .tool-btn {
+    margin-right: 8px;
+}
+
+/* 统一AI响应区域样式 */
+.translate-container .ai-response {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    overflow: hidden;
+    position: relative;
+}
+
+/* 统一占位文本样式 */
+.translate-container .preview-content .placeholder-text {
+    color: var(--secondary-color, #6c757d);
+    font-style: italic;
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    margin: 0;
+    padding: 0;
+}
+
+.translate-container .content-editor[contenteditable="true"]:empty:before {
+    content: attr(placeholder);
+    color: var(--secondary-color, #6c757d);
+    font-style: italic;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 统一面板间距 */
+.translate-container .panel-header h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--primary-color, #4a6cf7);
+}
+
+.translate-container .panel-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* 加载状态统一样式 */
+.translate-container .loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    z-index: 10;
+}
+
+.translate-container .loading::after {
+    content: '';
+    width: 30px;
+    height: 30px;
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-top-color: var(--primary-color, #4a6cf7);
+    border-radius: 50%;
+    animation: spin 1s ease-in-out infinite;
+}
+
+/* 响应式调整 */
+@media screen and (max-width: 1024px) {
+    .translate-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .translate-input-panel,
+    .translate-output-panel {
+        height: 500px;
+    }
+}
+
+/* 确保动画定义一致 */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* 确保焦点样式一致 */
+.translate-container .content-editor:focus {
+    border-color: transparent;
+    box-shadow: none;
+    outline: none;
+}
+
+/* 统一激活状态样式 */
+.translate-container .feature-tab.active {
+    background: var(--primary-color, #4a6cf7);
+    color: #fff;
+}
+
+/* 修复面板框架问题，确保无额外边框 */
+.translate-container .feature-tab,
+.translate-container .email-container,
+.translate-container .translate-container {
+    border: none;
+    box-shadow: none;
+}
+
+/* 修复内部组件差异 */
+.translate-container .content-editor,
+.translate-container .preview-content {
+    box-shadow: none;
+}
+
+/* 确保翻译按钮与生成内容按钮样式一致 */
+.translate-container .send-btn {
+    background-color: #3c3c3c;
+    border-radius: 8px;
+    color: white;
+    padding: 10px 20px;
+    font-weight: 500;
+    box-shadow: none;
+}
+
+.translate-container .send-btn:hover {
+    background-color: #2a2a2a;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 确保语言选择器与邮件助手工具栏按钮的样式一致 */
+.translate-container .language-selector {
+    background-color: rgba(0, 0, 0, 0.05);
+    border: none;
+    color: #333;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.translate-container .language-selector:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* 清除任何可能影响输入框差异的样式 */
+.translate-container .content-editor:empty:before {
+    font-style: italic;
+    color: #888;
+}
+
+/* 确保整体容器边距一致 */
+.translate-container .translate-input-panel,
+.translate-container .translate-output-panel {
+    padding: 0;
+    border-radius: 16px;
+    background: white;
+}
+
+/* 修复内部编辑器的样式 */
+.translate-container .content-editor {
+    border: none;
+    background-color: transparent;
+    padding: 16px;
+    box-shadow: none;
+    width: 100%;
+    height: calc(100% - 100px);
+    overflow-y: auto;
+    font-family: inherit;
+}
+
+/* 确保内容占位符样式一致 */
+.translate-container .content-editor:empty:before {
+    content: attr(placeholder);
+    color: #888;
+    font-style: italic;
+    position: absolute;
+    left: 16px;
+    top: 16px;
+}
+
+/* 修复预览区域样式 */
+.translate-container .preview-content {
+    border: none;
+    background-color: transparent;
+    padding: 16px;
+    width: 100%;
+    height: calc(100% - 40px);
+    overflow-y: auto;
+    font-family: inherit;
+}
+
+/* 修正翻译面板与邮件助手的主要容器差异 */
+.feature-container[data-feature="translate"] {
+    max-width: 100%;
+    width: 100%;
+}
+
+/* 修复编辑器容器内部的间距 */
+.translate-container .editor-content {
+    padding: 0;
+    flex: 1;
+}
+
+/* 修复内部容器的边界 */
+.translate-container .ai-response {
+    padding: 0;
+    flex: 1;
+} 

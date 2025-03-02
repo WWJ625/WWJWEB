@@ -3,7 +3,7 @@ const CONFIG = {
     MAX_ATTACHMENTS: 5,
     API_ENDPOINT: 'https://api.deepseek.com/v1/chat/completions',
     API_MODEL: 'deepseek-chat',
-    API_KEY: 'sk-ce5f0690af0d454cb4a08054db2b9102',
+    API_KEY: 'sk-aa27b257a6f340acad96a6a733782c72',
     MAX_IMAGE_SIZE: 5 * 1024 * 1024, // 5MB
     ALLOWED_IMAGE_TYPES: ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
 };
@@ -40,10 +40,10 @@ const utils = {
         }
     },
 
-    // 清空所有内容的函数
+    // 清空所有内容的函数 - 适用于邮件功能区域
     clearAllContent() {
         // 清空输入框中的文字和图片
-        const contentEditor = document.querySelector('.content-editor');
+        const contentEditor = document.querySelector('.feature-container[data-feature="email"] .content-editor');
         if (contentEditor) {
             contentEditor.innerHTML = '';
             // 重置 placeholder
@@ -51,7 +51,7 @@ const utils = {
         }
 
         // 清空附件列表
-        const attachmentsList = document.querySelector('.attachments-list');
+        const attachmentsList = document.querySelector('.feature-container[data-feature="email"] .attachments-list');
         if (attachmentsList) {
             attachmentsList.innerHTML = '';
         }
@@ -60,7 +60,7 @@ const utils = {
         window.attachments = [];
 
         // 重置预览区域
-        const previewContent = document.querySelector('.preview-content');
+        const previewContent = document.querySelector('.feature-container[data-feature="email"] .preview-content');
         if (previewContent) {
             previewContent.innerHTML = '<p class="placeholder-text">AI 将根据您的输入生成内容...</p>';
         }
@@ -109,8 +109,8 @@ const utils = {
             .replace(/\n{3,}/g, '\n\n')
             .trim();
 
-        // 显示处理后的内容
-        previewContent.innerHTML = cleanedResponse;
+        // 显示处理后的内容 - 替换换行符为<br>以在HTML中正确显示
+        previewContent.innerHTML = cleanedResponse.replace(/\n/g, '<br>');
     },
 
     validateImage(file) {
@@ -137,125 +137,7 @@ function initAnimations() {
     const sections = document.querySelectorAll('.section');
     const indicators = document.querySelectorAll('.indicator');
     const navLinks = document.querySelectorAll('.nav-link');
-    const options = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.5
-    };
-
-    // 记录已经播放过动画的section
-    const animatedSections = new Set();
-    // 记录目标section
-    let targetSection = null;
-    // 记录是否正在快速跳转
-    let isQuickJumping = false;
-    // 快速跳转的超时时间
-    const QUICK_JUMP_TIMEOUT = 1000;
-    let quickJumpTimer = null;
-    // 记录滚动方向
-    let lastScrollY = window.scrollY;
-    let scrollDirection = 'down';
-    // 记录上一个激活的section
-    let lastActiveSection = null;
-
-    // 重置section的动画状态
-    function resetSectionAnimation(section, isHome = false) {
-        if (!section) return;
-
-        // 移除active类
-        section.classList.remove('active');
-        
-        // 重置所有子元素的动画状态
-        const projectCards = section.querySelectorAll('.project-card');
-        const musicCards = section.querySelectorAll('.music-card');
-        const featureTabs = section.querySelectorAll('.feature-tab');
-        const featureContainer = section.querySelector('.feature-container.active');
-        
-        // 重置动画
-        const resetAnimation = (element) => {
-            if (element) {
-                element.style.animation = 'none';
-                element.offsetHeight; // 触发重排
-                element.style.animation = null;
-                // 如果是首页元素，重置动画延迟
-                if (isHome) {
-                    element.style.animationDelay = element.dataset.originalDelay || '0s';
-                }
-            }
-        };
-        
-        projectCards.forEach(resetAnimation);
-        musicCards.forEach(resetAnimation);
-        featureTabs.forEach(resetAnimation);
-        resetAnimation(featureContainer);
-        
-        // 强制重排
-        void section.offsetHeight;
-        
-        // 添加active类触发动画
-        requestAnimationFrame(() => {
-            section.classList.add('active');
-        });
-    }
-
-    // 处理首页动画的专门函数
-    function handleHomeAnimation(section, isScrolling = false) {
-        if (!section || section.id !== 'home') return;
-        
-        // 移除所有动画相关的状态
-        animatedSections.delete(section);
-        section.classList.remove('active');
-        
-        // 获取所有需要动画的元素
-        const title = section.querySelector('.hero-title');
-        const subtitle = section.querySelector('.hero-subtitle');
-        const buttons = section.querySelector('.hero-buttons');
-        
-        // 重置所有元素的状态
-        [title, subtitle, buttons].forEach(element => {
-            if (element) {
-                element.style.opacity = '0';
-                element.style.transform = 'translateY(30px)';
-                element.style.transition = 'none';
-            }
-        });
-        
-        // 强制重排
-        void section.offsetHeight;
-
-        // 如果是滚动触发，添加延迟等待滚动完成
-        const scrollDelay = isScrolling ? 300 : 0;
-        
-        // 按顺序应用动画
-        setTimeout(() => {
-            requestAnimationFrame(() => {
-                section.classList.add('active');
-                
-                if (title) {
-                    title.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
-                    title.style.opacity = '1';
-                    title.style.transform = 'translateY(0)';
-                }
-                
-                if (subtitle) {
-                    setTimeout(() => {
-                        subtitle.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
-                        subtitle.style.opacity = '1';
-                        subtitle.style.transform = 'translateY(0)';
-                    }, 150);
-                }
-                
-                if (buttons) {
-                    setTimeout(() => {
-                        buttons.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
-                        buttons.style.opacity = '1';
-                        buttons.style.transform = 'translateY(0)';
-                    }, 300);
-                }
-            });
-        }, scrollDelay);
-    }
-
+    
     // 更新导航和指示器状态的函数
     function updateNavigationState(activeSection) {
         if (!activeSection) return;
@@ -275,33 +157,28 @@ function initAnimations() {
         if (activeLink) {
             activeLink.classList.add('active');
         }
-
-        // 更新上一个激活的section
-        lastActiveSection = activeSection;
+        
+        // 更新section状态，添加动画效果
+        sections.forEach(section => {
+            section.classList.remove('active');
+        });
+        activeSection.classList.add('active');
     }
 
     // 处理滚动到指定section的函数
     function scrollToSection(section) {
         if (section) {
-            const currentIndex = Array.from(sections).indexOf(document.elementFromPoint(window.innerWidth / 2, window.innerHeight / 2).closest('.section'));
-            const targetIndex = Array.from(sections).indexOf(section);
-            scrollDirection = targetIndex > currentIndex ? 'down' : 'up';
-            
-            // 设置快速跳转状态
-            isQuickJumping = true;
-            targetSection = section;
-            
-            // 清除之前的定时器
-            if (quickJumpTimer) {
-                clearTimeout(quickJumpTimer);
-            }
-            
             // 更新URL hash，但不触发滚动
             const sectionId = section.id;
             history.replaceState(null, '', `#${sectionId}`);
             
             // 计算目标滚动位置
             const offset = section.offsetTop;
+            
+            // 首先移除所有section的active类
+            sections.forEach(s => {
+                s.classList.remove('active');
+            });
             
             // 使用scrollTo而不是scrollIntoView，以确保精确定位
             window.scrollTo({
@@ -311,95 +188,52 @@ function initAnimations() {
             
             // 立即更新导航状态
             updateNavigationState(section);
-
-            // 如果是首页，使用专门的动画处理函数，并标记为滚动触发
-            if (section.id === 'home') {
-                handleHomeAnimation(section, true);
-            }
-            // 如果是目标页面，重置并播放动画
-            else if (section === targetSection) {
-                // 从animatedSections中移除目标section，允许重新播放动画
-                animatedSections.delete(section);
-                setTimeout(() => {
-                    resetSectionAnimation(section);
-                }, 300); // 添加300ms延迟，等待滚动开始
-            }
             
-            // 设置超时，如果超过一定时间还没到达目标section，就取消快速跳转状态
-            quickJumpTimer = setTimeout(() => {
-                isQuickJumping = false;
-                targetSection = null;
-            }, QUICK_JUMP_TIMEOUT);
+            // 等待一段时间后添加active类，触发动画
+            setTimeout(() => {
+                section.classList.add('active');
+            }, 300);
         }
     }
 
-    // 监听滚动事件来更新滚动方向和导航状态
+    // 滚动处理函数
+    function scrollHandler() {
+        // 如果初始加载尚未完成，则不触发滚动处理
+        if (!initialLoadComplete) {
+            return;
+        }
+        
+        // 获取当前滚动位置
+        const scrollPosition = window.scrollY;
+        
+        // 查找当前在视口中的section
+        let currentSection = null;
+        
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            
+            // 判断当前section是否在视口中
+            if (scrollPosition >= sectionTop - 200 && scrollPosition < sectionTop + sectionHeight - 200) {
+                currentSection = section;
+            }
+        });
+        
+        // 如果找到了当前section，更新导航状态
+        if (currentSection) {
+            updateNavigationState(currentSection);
+        }
+    }
+
+    // 监听滚动事件来更新导航状态
     let scrollTimeout;
     window.addEventListener('scroll', () => {
-        scrollDirection = window.scrollY > lastScrollY ? 'down' : 'up';
-        lastScrollY = window.scrollY;
-
         // 使用防抖来减少更新频率
         clearTimeout(scrollTimeout);
         scrollTimeout = setTimeout(() => {
-            // 找到当前最接近视口中心的section
-            const viewportCenter = window.innerHeight / 2;
-            let closestSection = null;
-            let minDistance = Infinity;
-
-            sections.forEach(section => {
-                const rect = section.getBoundingClientRect();
-                const distance = Math.abs(rect.top + rect.height / 2 - viewportCenter);
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    closestSection = section;
-                }
-            });
-
-            if (closestSection && closestSection !== lastActiveSection) {
-                updateNavigationState(closestSection);
-            }
+            scrollHandler();
         }, 100);
     }, { passive: true });
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            // 如果正在快速跳转且当前section不是目标section，跳过动画
-            if (isQuickJumping && entry.target !== targetSection) {
-                return;
-            }
-
-            if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
-                // 首页特殊处理：使用专门的动画处理函数，并标记为滚动触发
-                if (entry.target.id === 'home') {
-                    handleHomeAnimation(entry.target, true);
-                    return;
-                }
-
-                // 其他页面：如果是目标section或不在快速跳转中，播放动画
-                if (!isQuickJumping || entry.target === targetSection) {
-                    // 重置并播放动画
-                    resetSectionAnimation(entry.target);
-                }
-
-                // 如果是目标section，结束快速跳转状态
-                if (entry.target === targetSection) {
-                    isQuickJumping = false;
-                    targetSection = null;
-                }
-            } else {
-                // 只有当元素完全离开视图时才重置动画状态
-                if (entry.intersectionRatio === 0) {
-                    // 允许所有section在下次进入视图时重新播放动画
-                    animatedSections.delete(entry.target);
-                }
-            }
-        });
-    }, options);
-
-    sections.forEach(section => {
-        observer.observe(section);
-    });
 
     // 导航点击事件处理
     navLinks.forEach(link => {
@@ -420,37 +254,40 @@ function initAnimations() {
 
     // 初始化页面状态
     function initializePageState() {
-        // 获取当前hash
-        const hash = window.location.hash;
-        const targetSection = hash ? document.querySelector(hash) : sections[0];
+        // 如果初始加载尚未完成，则等待window.onload函数处理
+        if (!initialLoadComplete) {
+            return;
+        }
+        
+        // 无论当前hash是什么，总是跳转到首页
+        const targetSection = sections[0];
         
         if (targetSection) {
             // 计算目标滚动位置
             const offset = targetSection.offsetTop;
             
-            // 使用scrollTo精确定位
+            // 使用scrollTo而不是scrollIntoView，以确保精确定位
             window.scrollTo({
                 top: offset,
                 behavior: 'auto'
             });
             
-            // 更新状态
+            // 立即更新导航状态
             updateNavigationState(targetSection);
-
-            // 如果是首页，使用专门的动画处理函数
-            if (targetSection.id === 'home') {
-                handleHomeAnimation(targetSection);
-            } else {
-                // 其他页面正常处理
-                resetSectionAnimation(targetSection);
-                animatedSections.add(targetSection);
-            }
+            
+            // 延迟一小段时间后添加active类，以便触发动画
+            setTimeout(() => {
+                targetSection.classList.add('active');
+            }, 100);
         }
     }
 
     // 页面加载完成后初始化状态
     window.addEventListener('load', initializePageState);
 }
+
+// 防止某些滚动操作中断首页跳转
+let initialLoadComplete = false;
 
 // 初始化所有功能
 document.addEventListener('DOMContentLoaded', function() {
@@ -462,7 +299,59 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 初始化 AI 功能
     initAIFeatures();
+    
+    // 确保所有section默认可见
+    document.querySelectorAll('.section').forEach(section => {
+        section.style.opacity = "1";
+        section.style.transform = "translateY(0)";
+    });
 });
+
+// 在页面完全加载后（包括图片和样式），强制跳转到首页
+window.onload = function() {
+    // 标记初始加载完成
+    initialLoadComplete = true;
+    
+    // 初始化页面状态
+    initializePageState();
+    
+    // 确保首页section有active类
+    if (sections[0] && !sections[0].classList.contains('active')) {
+        sections[0].classList.add('active');
+    }
+    
+    // 强制滚动到页面顶部
+    window.scrollTo(0, 0);
+    
+    // 更新URL为首页
+    if (window.location.hash !== '#home') {
+        history.replaceState(null, '', '#home');
+    }
+    
+    // 更新导航状态
+    const navLinks = document.querySelectorAll('.nav-link');
+    const indicators = document.querySelectorAll('.indicator');
+    
+    // 设置第一个导航和指示器为活跃状态
+    navLinks.forEach(link => link.classList.remove('active'));
+    indicators.forEach(ind => ind.classList.remove('active'));
+    
+    const homeLink = document.querySelector('.nav-link[data-index="0"]');
+    const homeIndicator = document.querySelector('.indicator[data-index="0"]');
+    
+    if (homeLink) homeLink.classList.add('active');
+    if (homeIndicator) homeIndicator.classList.add('active');
+    
+    // 延迟一小段时间后将初始加载标记为完成
+    setTimeout(() => {
+        initialLoadComplete = true;
+    }, 100);
+};
+
+// 添加一个防护措施，如果用户直接访问非首页URL，也会重定向到首页
+if (window.location.hash && window.location.hash !== '#home') {
+    window.location.hash = 'home';
+}
 
 // 功能切换初始化
 function initFeatureSwitch() {
@@ -494,15 +383,22 @@ function initAIFeatures() {
     const elements = {
         featureTabs: document.querySelectorAll('.feature-tab'),
         featureContainers: document.querySelectorAll('.feature-container'),
-        sendBtn: document.querySelector('.send-btn'),
-        contentEditor: document.querySelector('.content-editor'),
-        previewContent: document.querySelector('.preview-content'),
-        copyBtn: document.querySelector('.copy-btn'),
-        attachmentBtn: document.querySelector('.attachment-btn'),
-        fileUpload: document.querySelector('#file-upload'),
-        attachmentsList: document.querySelector('.attachments-list'),
-        clearBtn: document.querySelector('.tool-btn[title="清空内容"]'),
-        grammarBtn: document.querySelector('.tool-btn[title="语法检查"]')
+        // 邮件功能元素
+        emailSendBtn: document.querySelector('.feature-container[data-feature="email"] .send-btn'),
+        emailContentEditor: document.querySelector('.feature-container[data-feature="email"] .content-editor'),
+        emailPreviewContent: document.querySelector('.feature-container[data-feature="email"] .preview-content'),
+        emailCopyBtn: document.querySelector('.feature-container[data-feature="email"] .copy-btn'),
+        emailAttachmentBtn: document.querySelector('.feature-container[data-feature="email"] .attachment-btn'),
+        emailFileUpload: document.querySelector('.feature-container[data-feature="email"] #file-upload'),
+        emailAttachmentsList: document.querySelector('.feature-container[data-feature="email"] .attachments-list'),
+        emailClearBtn: document.querySelector('.feature-container[data-feature="email"] .tool-btn[title="清空内容"]'),
+        // 翻译功能元素
+        translateSendBtn: document.querySelector('.feature-container[data-feature="translate"] .send-btn'),
+        translateContentEditor: document.querySelector('.feature-container[data-feature="translate"] .content-editor'),
+        translatePreviewContent: document.querySelector('.feature-container[data-feature="translate"] .preview-content'),
+        translateCopyBtn: document.querySelector('.feature-container[data-feature="translate"] .copy-btn'),
+        translateClearBtn: document.querySelector('.feature-container[data-feature="translate"] .tool-btn[title="清空内容"]'),
+        translateLanguageSelector: document.querySelector('.feature-container[data-feature="translate"] .language-selector')
     };
 
     // 存储附件列表
@@ -513,14 +409,15 @@ function initAIFeatures() {
         tab.addEventListener('click', () => handleFeatureSwitch(tab, elements));
     });
 
+    // ==== 邮件功能 ====
     // 清空内容按钮
-    elements.clearBtn?.addEventListener('click', () => {
+    elements.emailClearBtn?.addEventListener('click', () => {
         utils.clearAllContent();
     });
 
     // 内容编辑器粘贴事件
-    if (elements.contentEditor) {
-        elements.contentEditor.addEventListener('paste', async function(e) {
+    if (elements.emailContentEditor) {
+        elements.emailContentEditor.addEventListener('paste', async function(e) {
             e.preventDefault();
             
             // 处理图片粘贴
@@ -543,9 +440,9 @@ function initAIFeatures() {
                                 img.style.borderRadius = '4px';
                                 
                                 // 插入图片
-                                elements.contentEditor.appendChild(img);
+                                elements.emailContentEditor.appendChild(img);
                                 // 添加换行
-                                elements.contentEditor.appendChild(document.createElement('br'));
+                                elements.emailContentEditor.appendChild(document.createElement('br'));
                             };
                             reader.readAsDataURL(file);
                             hasHandledImage = true;
@@ -569,43 +466,32 @@ function initAIFeatures() {
         });
     }
 
-    // 语法检查按钮
-    elements.grammarBtn?.addEventListener('click', () => {
-        try {
-            utils.validateContent(elements.contentEditor?.innerText);
-            // TODO: 实现语法检查功能
-            alert('语法检查功能即将上线');
-        } catch (error) {
-            alert(error.message);
-        }
-    });
-
     // 附件处理
-    if (elements.attachmentBtn && elements.fileUpload) {
+    if (elements.emailAttachmentBtn && elements.emailFileUpload) {
         initializeFileUpload(elements, window.attachments);
     }
 
-    // 生成内容按钮点击事件
-    elements.sendBtn?.addEventListener('click', async () => {
+    // 生成邮件内容按钮点击事件
+    elements.emailSendBtn?.addEventListener('click', async () => {
         try {
-            const content = elements.contentEditor?.innerText;
+            const content = elements.emailContentEditor?.innerText;
             
             if (!content?.trim()) {
                 utils.showMessage(
-                    elements.previewContent,
+                    elements.emailPreviewContent,
                     'error',
                     '<p class="placeholder-text">请输入内容后再生成</p>'
                 );
                 return;
             }
 
-            utils.showLoading(elements.previewContent);
+            utils.showLoading(elements.emailPreviewContent);
             const response = await generateEmailResponse(content, window.attachments);
-            utils.displayResponse(response, elements.previewContent);
+            utils.displayResponse(response, elements.emailPreviewContent);
 
         } catch (error) {
             utils.showMessage(
-                elements.previewContent,
+                elements.emailPreviewContent,
                 'error',
                 '生成内容时发生错误',
                 '请稍后重试'
@@ -614,10 +500,63 @@ function initAIFeatures() {
         }
     });
 
-    // 复制按钮功能
-    elements.copyBtn?.addEventListener('click', () => {
-        const content = elements.previewContent?.innerText;
-        if (content) {
+    // 邮件复制按钮功能
+    elements.emailCopyBtn?.addEventListener('click', () => {
+        const content = elements.emailPreviewContent?.innerText;
+        if (content && content !== 'AI 将根据您的输入生成内容...') {
+            navigator.clipboard.writeText(content)
+                .then(() => alert('已复制到剪贴板'))
+                .catch(() => alert('复制失败，请手动复制'));
+        }
+    });
+
+    // ==== 翻译功能 ====
+    // 翻译清空按钮
+    elements.translateClearBtn?.addEventListener('click', () => {
+        if (elements.translateContentEditor) {
+            elements.translateContentEditor.innerHTML = '';
+            elements.translateContentEditor.setAttribute('data-empty', 'true');
+        }
+        if (elements.translatePreviewContent) {
+            elements.translatePreviewContent.innerHTML = '<p class="placeholder-text">AI 将根据您的输入生成内容...</p>';
+        }
+    });
+
+    // 翻译按钮
+    elements.translateSendBtn?.addEventListener('click', async () => {
+        try {
+            const content = elements.translateContentEditor?.innerText;
+            
+            if (!content?.trim()) {
+                elements.translatePreviewContent.innerHTML = '<p class="placeholder-text">请输入内容后再翻译</p>';
+                return;
+            }
+
+            // 获取语言选择
+            const targetLanguage = elements.translateLanguageSelector?.value || 'en';
+            
+            // 显示加载状态
+            elements.translatePreviewContent.innerHTML = '<div class="loading">正在翻译，请稍候...</div>';
+            
+            // 发送翻译请求
+            const response = await translateText(content, 'auto', targetLanguage);
+            
+            // 显示翻译结果
+            elements.translatePreviewContent.innerHTML = response.replace(/\n/g, '<br>');
+
+        } catch (error) {
+            elements.translatePreviewContent.innerHTML = `<div class="error-message">
+                翻译失败
+                <div class="error-detail">${error.message || '请稍后重试'}</div>
+            </div>`;
+            console.error('Error:', error);
+        }
+    });
+
+    // 翻译复制按钮功能
+    elements.translateCopyBtn?.addEventListener('click', () => {
+        const content = elements.translatePreviewContent?.innerText;
+        if (content && content !== 'AI 将根据您的输入生成内容...') {
             navigator.clipboard.writeText(content)
                 .then(() => alert('已复制到剪贴板'))
                 .catch(() => alert('复制失败，请手动复制'));
@@ -625,35 +564,47 @@ function initAIFeatures() {
     });
 }
 
-// 功能切换处理
-function handleFeatureSwitch(tab, elements) {
-    elements.featureTabs.forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-
-    const feature = tab.getAttribute('data-feature');
-    elements.featureContainers.forEach(container => {
-        container.classList.remove('active');
+// 处理功能切换
+function handleFeatureSwitch(selectedTab, elements) {
+    // 获取选中功能的名称
+    const selectedFeature = selectedTab.getAttribute('data-feature');
+    
+    // 更新选项卡状态
+    elements.featureTabs.forEach(tab => {
+        const feature = tab.getAttribute('data-feature');
+        if (feature === selectedFeature) {
+            tab.classList.add('active');
+        } else {
+            tab.classList.remove('active');
+        }
     });
     
-    const targetContainer = document.querySelector(`.feature-container[data-feature="${feature}"]`);
-    targetContainer?.classList.add('active');
+    // 更新内容容器
+    elements.featureContainers.forEach(container => {
+        const feature = container.getAttribute('data-feature');
+        if (feature === selectedFeature) {
+            container.classList.add('active');
+        } else {
+            container.classList.remove('active');
+        }
+    });
 }
 
 // 初始化文件上传
 function initializeFileUpload(elements, attachments) {
-    elements.attachmentBtn.addEventListener('click', () => {
-        elements.fileUpload.click();
+    elements.emailAttachmentBtn.addEventListener('click', () => {
+        elements.emailFileUpload.click();
     });
 
-    elements.fileUpload.addEventListener('change', (e) => {
+    elements.emailFileUpload.addEventListener('change', (e) => {
         try {
             const files = Array.from(e.target.files || []);
             files.forEach(file => {
                 utils.validateAttachments(window.attachments.length);
                 window.attachments.push(file);
-                displayAttachment(file, elements.attachmentsList);
+                displayAttachment(file, elements.emailAttachmentsList);
             });
-            elements.fileUpload.value = '';
+            elements.emailFileUpload.value = '';
         } catch (error) {
             alert(error.message);
         }
@@ -726,6 +677,59 @@ ${attachments.length > 0 ? `附件列表：\n${attachments.map(file => `- ${file
     } catch (error) {
         console.error('生成回复失败:', error);
         throw new Error('生成回复时发生错误，请稍后重试');
+    }
+}
+
+// 翻译功能实现
+async function translateText(content, sourceLanguage = 'auto', targetLanguage = 'en') {
+    const systemPrompt = `你是一个专业的翻译助手。请严格按照以下规则处理翻译：
+    1. 准确传达原文的意思和语气
+    2. 使用自然流畅的表达方式
+    3. 保留原文的段落结构
+    4. 专业术语应使用对应语言中的标准翻译`;
+
+    try {
+        // 确保内容不为空
+        if (!content?.trim()) {
+            throw new Error('请输入要翻译的文本');
+        }
+
+        let promptText = '';
+        if (sourceLanguage === 'auto') {
+            promptText = `请翻译以下文本为${targetLanguage === 'en' ? '英文' : targetLanguage === 'zh' ? '中文' : targetLanguage === 'ja' ? '日文' : '目标语言'}：\n\n${content}`;
+        } else {
+            promptText = `请将以下${sourceLanguage === 'zh' ? '中文' : sourceLanguage === 'en' ? '英文' : sourceLanguage === 'ja' ? '日文' : '源语言'}文本翻译为${targetLanguage === 'en' ? '英文' : targetLanguage === 'zh' ? '中文' : targetLanguage === 'ja' ? '日文' : '目标语言'}：\n\n${content}`;
+        }
+
+        const response = await fetch(CONFIG.API_ENDPOINT, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${CONFIG.API_KEY}`
+            },
+            body: JSON.stringify({
+                model: CONFIG.API_MODEL,
+                messages: [
+                    { role: 'system', content: systemPrompt },
+                    { role: 'user', content: promptText }
+                ],
+                stream: false,
+                temperature: 0.3, // 翻译需要更低的创造性
+                max_tokens: 2000,
+                top_p: 0.95
+            })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error?.message || 'AI 服务请求失败');
+        }
+
+        const result = await response.json();
+        return result.choices[0].message.content;
+    } catch (error) {
+        console.error('翻译失败:', error);
+        throw new Error('翻译过程中发生错误，请稍后重试');
     }
 }
 

@@ -45,6 +45,10 @@
         rgba(65, 105, 225, 0.4),
         transparent
     );
+
+    --panel-bg: #ffffff;
+    --panel-secondary-bg: #f9f9f9;
+    --text-primary: #333333;
 }
 
 html {
@@ -342,6 +346,26 @@ body {
     padding: 40px;
 }
 
+.hero-title, .hero-subtitle, .cta-button {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.section.active .hero-title {
+    animation: fadeInUp 0.8s ease forwards;
+    animation-delay: 0.3s;
+}
+
+.section.active .hero-subtitle {
+    animation: fadeInUp 0.8s ease forwards;
+    animation-delay: 0.5s;
+}
+
+.section.active .cta-button {
+    animation: fadeInUp 0.8s ease forwards;
+    animation-delay: 0.7s;
+}
+
 .hero-title {
     font-size: 48px;
     font-weight: 700;
@@ -387,10 +411,9 @@ body {
     background: #fff;
 }
 
-/* 邮件编辑器容器 */
-.email-editor-container {
-    max-width: 1200px;
-    margin: 0 auto;
+/* 邮件编辑器和翻译界面的共同容器样式 */
+.email-editor-container,
+.translate-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 40px;
@@ -404,8 +427,6 @@ body {
 /* 输入和输出面板基础样式 */
 .input-panel,
 .output-panel,
-.chat-input-panel,
-.chat-output-panel,
 .translate-input-panel,
 .translate-output-panel {
     background: #fff;
@@ -419,7 +440,6 @@ body {
 
 /* 最后一个面板移除底部边距 */
 .output-panel,
-.chat-output-panel,
 .translate-output-panel {
     margin-bottom: 0;
 }
@@ -1448,6 +1468,16 @@ body {
     }
 }
 
+/* 添加spin关键帧动画 */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 .attachment-btn, .copy-btn {
     width: 36px;
     height: 36px;
@@ -1493,9 +1523,8 @@ body {
     display: block;
 }
 
-/* 邮件编辑器、聊天界面和翻译界面的共同容器样式 */
+/* 邮件编辑器和翻译界面的共同容器样式 */
 .email-editor-container,
-.chat-container,
 .translate-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1510,8 +1539,6 @@ body {
 /* 输入和输出面板基础样式 */
 .input-panel,
 .output-panel,
-.chat-input-panel,
-.chat-output-panel,
 .translate-input-panel,
 .translate-output-panel {
     background: #fff;
@@ -1594,7 +1621,6 @@ body {
 /* 响应式调整 */
 @media screen and (max-width: 1024px) {
     .email-editor-container,
-    .chat-container,
     .translate-container {
         grid-template-columns: 1fr;
         gap: 20px;
@@ -1602,8 +1628,6 @@ body {
 
     .input-panel,
     .output-panel,
-    .chat-input-panel,
-    .chat-output-panel,
     .translate-input-panel,
     .translate-output-panel {
         height: 500px;
@@ -1613,60 +1637,17 @@ body {
 /* 主要区域的动画效果 */
 .section {
     opacity: 0;
-    transform: translateY(30px);
-    transition: none;
-    will-change: opacity, transform;
+    visibility: hidden;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
 }
 
+/* 页面切换动画样式 */
 .section.active {
     opacity: 1;
-    transform: translateY(0);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    visibility: visible;
 }
 
-/* 资讯区域的卡片动画 */
-.section.active .project-card {
-    opacity: 0;
-    transform: translateY(30px);
-    animation: fadeInUp 0.8s ease-out forwards;
-    animation-delay: calc(var(--card-index) * 0.1s + 0.3s);
-}
-
-/* 音乐区域的卡片动画 */
-.section.active .music-card {
-    opacity: 0;
-    transform: translateY(30px);
-    animation: fadeInUp 0.8s ease-out forwards;
-    animation-delay: calc(var(--card-index) * 0.1s + 0.3s);
-}
-
-/* 智能体区域的按钮动画 */
-.section.active .feature-tab {
-    opacity: 0;
-    transform: translateY(30px);
-    animation: fadeInUp 0.8s ease-out forwards;
-}
-
-.section.active .feature-tab:nth-child(1) {
-    animation-delay: 0.3s;
-}
-
-.section.active .feature-tab:nth-child(2) {
-    animation-delay: 0.5s;
-}
-
-.section.active .feature-tab:nth-child(3) {
-    animation-delay: 0.7s;
-}
-
-/* 智能体区域的功能容器动画 */
-.section.active .feature-container.active {
-    opacity: 0;
-    transform: translateY(30px);
-    animation: fadeInUp 0.8s ease-out forwards;
-    animation-delay: 0s;
-}
-
+/* 内容元素的动画 */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -1676,4 +1657,118 @@ body {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* 页面元素动画 */
+.section.active .project-card,
+.section.active .music-card,
+.section.active .feature-tab,
+.section.active .feature-container {
+    animation: fadeInUp 0.8s ease forwards;
+    animation-delay: calc(var(--card-index, 0) * 0.1s + 0.3s);
+}
+
+.project-card, .music-card, .feature-tab, .feature-container {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+/* 英雄区域动画 */
+.hero-title, .hero-subtitle, .cta-button {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.section.active .hero-title {
+    animation: fadeInUp 0.8s ease forwards;
+    animation-delay: 0.3s;
+}
+
+.section.active .hero-subtitle {
+    animation: fadeInUp 0.8s ease forwards;
+    animation-delay: 0.5s;
+}
+
+.section.active .cta-button {
+    animation: fadeInUp 0.8s ease forwards;
+    animation-delay: 0.7s;
+}
+
+/* 功能部分的内容区域 */
+.feature-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 1.5rem;
+}
+
+/* 邮件编辑区和预览区 */
+.email-input-panel,
+.email-output-panel,
+.translate-input-panel,
+.translate-output-panel {
+    flex: 1;
+    background-color: var(--panel-bg);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    overflow: auto;
+    position: relative;
+}
+
+/* 输入区域通用样式 */
+.content-editor {
+    width: 100%;
+    min-height: 100px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--text-primary);
+    background-color: transparent;
+    resize: none;
+    overflow: auto;
+}
+
+.email-output-panel,
+.translate-output-panel {
+    background-color: var(--panel-secondary-bg);
+    position: relative;
+}
+
+/* 容器通用样式 */
+.email-container,
+.translate-container {
+    display: none;
+    flex-direction: column;
+    height: 100%;
+}
+
+.feature-container.active .email-container,
+.feature-container.active .translate-container {
+    display: flex;
+}
+
+/* 响应式调整 */
+@media (min-width: 992px) {
+    .email-container,
+    .translate-container {
+        flex-direction: row;
+        gap: 1.5rem;
+    }
+
+    .email-input-panel,
+    .email-output-panel,
+    .translate-input-panel,
+    .translate-output-panel {
+        flex: 1;
+        margin-bottom: 0;
+    }
+}
+
+/* 确保翻译容器正确显示 */
+.translate-container {
+    width: 100%;
+    height: auto;
+    min-height: 600px;
 }

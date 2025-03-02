@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WWJ的个人主页</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/translate-fix.css">
+    <link rel="stylesheet" href="css/email-translate-unify.css">
     <!-- 添加网站图标 -->
     <link rel="icon" type="image/png" href="images/favicon.png">
 </head>
@@ -360,12 +362,6 @@
                             </svg>
                             <span>邮件助手</span>
                         </button>
-                        <button class="feature-tab" data-feature="chat">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                            </svg>
-                            <span>智能对话</span>
-                        </button>
                         <button class="feature-tab" data-feature="translate">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
@@ -409,12 +405,6 @@
                                             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3-3h6M4 6h16"/>
                                         </svg>
                                     </button>
-                                    <button class="tool-btn" title="语法检查">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M9 11l3 3L22 4"/>
-                                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
-                                        </svg>
-                                    </button>
                                     <button class="send-btn">生成内容</button>
                                 </div>
                             </div>
@@ -438,49 +428,6 @@
                                     <div class="preview-content">
                                         <p class="placeholder-text">AI 将根据您的输入生成内容...</p>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 智能对话功能 -->
-                <div class="feature-container" data-feature="chat">
-                    <div class="chat-container">
-                        <!-- 左侧输入区域 -->
-                        <div class="chat-input-panel">
-                            <div class="panel-header">
-                                <h2>智能对话</h2>
-                            </div>
-                            <div class="editor-content">
-                                <div class="content-editor" contenteditable="true" placeholder="请输入您想要对话的内容..."></div>
-                                <div class="editor-tools">
-                                    <button class="tool-btn" title="清空内容">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3-3h6M4 6h16"/>
-                                        </svg>
-                                    </button>
-                                    <button class="send-btn">发送消息</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 右侧输出区域 -->
-                        <div class="chat-output-panel">
-                            <div class="panel-header">
-                                <h2>AI 回复</h2>
-                                <div class="panel-controls">
-                                    <button class="copy-btn" title="复制到剪贴板">
-                                        <svg viewBox="0 0 24 24" class="copy-icon">
-                                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-2"/>
-                                            <path d="M16 2H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"/>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="ai-response">
-                                <div class="preview-content">
-                                    <p class="placeholder-text">AI 将根据您的输入生成内容...</p>
                                 </div>
                             </div>
                         </div>
